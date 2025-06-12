@@ -1,0 +1,88 @@
+.header {
+  font-family: "Averia Serif Libre", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  background: linear-gradient(to right, #f9f6ef, #f1ede6);
+  padding: 20px 40px;
+  position: sticky;
+  top: var(--quote-bar-height);
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.header__links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.header__links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.header__links a:hover {
+  color: #3c6e47;
+}
+
+.header__logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e2e2e;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.header__logo:hover {
+  color: #3c6e47;
+}
+
+.brand-leaf {
+  width: 40px;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+
+.header__auth-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.header__button {
+  padding: 8px 16px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header__button:hover {
+  background-color: #f0f0f0;
+}
+
+.header__button--signup {
+  background-color: #3c6e47;
+  color: #fff;
+  border: none;
+}
+
+.header__button--signup:hover {
+  background-color: #2f5637;
+}

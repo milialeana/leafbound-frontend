@@ -1,0 +1,43 @@
+.about {
+  max-width: 800px;
+  margin: 20rem auto;
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: #f9f6ef;
+  border-radius: 12px;
+  font-family: "Averia Serif Libre", serif;
+  color: #2e2e2e;
+}
+
+.about-page {
+  background-image: url("../../assets/about-background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 100px 20px;
+}
+
+.about__title {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #3c6e47;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.about__title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background-color: #3c6e47;
+  margin: 0.5rem auto;
+  border-radius: 1px;
+}
+
+.about__text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  max-width: 650px;
+  margin: 0 auto;
+}

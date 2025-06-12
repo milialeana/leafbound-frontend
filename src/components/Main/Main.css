@@ -1,0 +1,83 @@
+.main {
+  font-family: "Averia Serif Libre", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 1.4;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding-top: calc(var(--quote-bar-height, 50px) + 80px);
+  margin: 0;
+}
+
+.main__tagline {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: "Averia Serif Libre", serif;
+  line-height: 1.5;
+  color: #2e2e2e;
+  margin: 40px auto 30px;
+  padding: 20px 40px;
+  max-width: 90%;
+  width: max-content;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.main__tagline-leaf {
+  width: 60px;
+  height: auto;
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main__book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.main__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 20px 0 40px;
+  flex-wrap: wrap;
+}
+
+.main__button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-family: "Averia Serif Libre", serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.main__button--signup {
+  background-color: #3c6e47;
+  color: #fff;
+}
+
+.main__button--signup:hover {
+  background-color: #2f5637;
+}
+
+.main__button--search {
+  background-color: #fff;
+  color: #3c6e47;
+  border: 1px solid #3c6e47;
+}
+
+.main__button--search:hover {
+  background-color: #f1f1f1;
+}

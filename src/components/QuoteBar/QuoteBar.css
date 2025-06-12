@@ -1,0 +1,45 @@
+.quote-bar {
+  font-family: "Averia Serif Libre", Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #333;
+  letter-spacing: 0.4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #fdf6e3, #f4f1e9);
+  padding: 14px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  animation: fadeSlide 0.9s ease-out;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quote-mark {
+  font-size: 1.5rem;
+  color: #aaa;
+  margin: 0 4px;
+}
+
+.quote-leaf {
+  width: 16px;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+
+body {
+  padding-top: 50px;
+}

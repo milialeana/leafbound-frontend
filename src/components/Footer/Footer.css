@@ -1,0 +1,48 @@
+.footer {
+  padding: 2rem;
+  background: linear-gradient(to right, #f9f6ef, #f1ede6);
+  color: #2e2e2e;
+  text-align: center;
+  font-family: "Averia Serif Libre", serif;
+  font-size: 0.95rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.footer::before {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 60%;
+  margin: 0 auto 1.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.footer__about {
+  margin-bottom: 1rem;
+}
+
+.footer__about h4 {
+  margin: 0 0 0.5rem;
+}
+
+.footer__links {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.footer__links li {
+  display: inline;
+  margin: 0 0.5rem;
+}
+
+.footer__links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer__links a:hover {
+  color: #2f5637;
+}
