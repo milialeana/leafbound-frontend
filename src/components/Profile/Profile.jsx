@@ -7,6 +7,8 @@ import lightBackgroundImage from "../../assets/light-mode.jpg";
 import darkBackgroundImage from "../../assets/dark-mode.jpg";
 import profilePic from "../../assets/default-avatar.png";
 import "./Profile.css";
+import "../Pagination/Pagination.css";
+import "../ModalPreview/ModalPreview.css";
 
 function Profile() {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,17 +22,14 @@ function Profile() {
   const backgroundImage =
     theme === "dark" ? darkBackgroundImage : lightBackgroundImage;
 
-  function toggleTheme() {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  }
-
-  function handlePreview(book) {
-    setSelectedBook(book);
-  }
-
-  function handleCloseModal() {
-    setSelectedBook(null);
-  }
+  const mainStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
+    fontFamily: '"Averia Serif Libre", serif',
+    paddingTop: "130px",
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -39,6 +38,12 @@ function Profile() {
     }, 1000);
     return () => clearTimeout(timeout);
   }, []);
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  const handlePreview = (book) => setSelectedBook(book);
+  const handleCloseModal = () => setSelectedBook(null);
 
   const filteredBooks = books.filter(
     (book) =>
@@ -54,14 +59,66 @@ function Profile() {
     startIndex + booksPerPage
   );
 
-  const mainStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-    fontFamily: '"Averia Serif Libre", serif',
-    paddingTop: "130px",
-  };
+  function renderPagination() {
+    if (totalPages <= 1) return null;
+
+    return (
+      <div className="pagination">
+        <button
+          className="pagination__button"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          ‹ Prev
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`pagination__button ${
+              currentPage === i + 1 ? "pagination__button--active" : ""
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          className="pagination__button"
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+        >
+          Next ›
+        </button>
+      </div>
+    );
+  }
+
+  function renderPreviewModal() {
+    if (!selectedBook) return null;
+
+    return (
+      <ModalWithForm
+        onClose={handleCloseModal}
+        contentClassName="modal__content--preview-green"
+        isPreview={true}
+      >
+        <div className="modal-preview">
+          <img
+            src={selectedBook.coverImage}
+            alt={selectedBook.title}
+            className="modal-preview__image"
+          />
+          <h2 className="modal-preview__title">{selectedBook.title}</h2>
+          <h4 className="modal-preview__author">by {selectedBook.author}</h4>
+          <p className="modal-preview__description">
+            {selectedBook.description}
+          </p>
+        </div>
+      </ModalWithForm>
+    );
+  }
 
   return (
     <>
@@ -102,64 +159,11 @@ function Profile() {
                 />
               ))}
             </div>
-
-            {totalPages > 1 && (
-              <div className="pagination">
-                <button
-                  className="pagination__button"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                >
-                  ‹ Prev
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i + 1}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`pagination__button ${
-                      currentPage === i + 1 ? "active" : ""
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-                <button
-                  className="pagination__button"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  Next ›
-                </button>
-              </div>
-            )}
+            {renderPagination()}
           </>
         )}
       </main>
-
-      {selectedBook && (
-        <ModalWithForm
-          onClose={handleCloseModal}
-          contentClassName="modal__content--green"
-          isPreview={true}
-        >
-          <div className="modal-preview">
-            <img
-              src={selectedBook.coverImage}
-              alt={selectedBook.title}
-              className="modal-preview__image"
-            />
-            <h2 className="modal-preview__title">{selectedBook.title}</h2>
-            <h4 className="modal-preview__author">by {selectedBook.author}</h4>
-            <p className="modal-preview__description">
-              {selectedBook.description}
-            </p>
-          </div>
-        </ModalWithForm>
-      )}
+      {renderPreviewModal()}
     </>
   );
 }

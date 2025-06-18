@@ -4,7 +4,7 @@
   color: #2e2e2e;
 }
 
-.profile.dark {
+.profile--dark {
   color: #f4f4f4;
 }
 
@@ -18,6 +18,7 @@
 }
 
 .profile__image {
+  margin-top: 15px;
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -72,47 +73,54 @@
   padding-bottom: 3rem;
 }
 
-.modal-preview {
-  text-align: center;
-}
+@media (max-width: 627px) {
+  .profile__top-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
 
-.modal-preview__image {
-  width: 100%;
-  max-width: 250px;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
+  .profile__image {
+    width: 100px;
+    height: 100px;
+  }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
+  .profile__controls {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
 
-.pagination__button {
-  padding: 8px 14px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.3s ease;
-}
+  .profile__button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
 
-.pagination__button:hover:not(:disabled) {
-  background-color: #f0f0f0;
-}
+  .profile__search input {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
+  }
 
-.pagination__button.active {
-  background-color: #3c6e47;
-  color: white;
-  font-weight: bold;
-}
+  .profile__book-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
 
-.pagination__button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .pagination__button {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
 }

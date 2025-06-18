@@ -1,20 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "./LoginModal.css";
 
-function LoginModal({ onClose, onSignUpClick, contentClassName }) {
+function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
 
+  useEffect(() => {
+    resetForm();
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Example validation or API call
-    console.log("Login submitted:", values);
-
-    resetForm();
-    onClose();
+    onLogin(values);
   };
 
   return (
@@ -30,6 +29,7 @@ function LoginModal({ onClose, onSignUpClick, contentClassName }) {
             required
             value={values.email || ""}
             onChange={handleChange}
+            autoComplete="email"
           />
           {errors.email && (
             <span className="modal-form__error">{errors.email}</span>
@@ -45,6 +45,7 @@ function LoginModal({ onClose, onSignUpClick, contentClassName }) {
             required
             value={values.password || ""}
             onChange={handleChange}
+            autoComplete="current-password"
           />
           {errors.password && (
             <span className="modal-form__error">{errors.password}</span>

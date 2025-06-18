@@ -8,53 +8,86 @@ import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import QuoteBar from "../QuoteBar/QuoteBar";
 import Profile from "../Profile/Profile";
+import { searchBooks } from "../../utils/GoogleBooksApi";
 
 function App() {
-  const [activeModal, setActiveModal] = useState(null); // 'login' | 'register' | null
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // mock login state
+  const [activeModal, setActiveModal] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [randomBooks, setRandomBooks] = useState([]);
 
-  const openLoginModal = () => setActiveModal("login");
-  const openRegisterModal = () => setActiveModal("register");
+  const openLoginModal = () => {
+    setActiveModal("login");
+    setSelectedBook(null);
+  };
+
+  const openRegisterModal = () => {
+    setActiveModal("register");
+    setSelectedBook(null);
+  };
+
   const closeModal = () => setActiveModal(null);
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
+  // Escape key closes both modals and preview
   useEffect(() => {
     function handleEscClose(e) {
-      if (e.key === "Escape") closeModal();
+      if (e.key === "Escape") {
+        closeModal();
+        setSelectedBook(null);
+      }
     }
     document.addEventListener("keydown", handleEscClose);
     return () => document.removeEventListener("keydown", handleEscClose);
   }, []);
 
+  // Load 3 random books on app start
   useEffect(() => {
-    const updateQuoteHeight = () => {
-      const quoteBar = document.querySelector(".quote-bar");
-      if (quoteBar) {
-        document.documentElement.style.setProperty(
-          "--quote-bar-height",
-          `${quoteBar.offsetHeight}px`
-        );
-      }
-    };
-    updateQuoteHeight();
-    window.addEventListener("resize", updateQuoteHeight);
-    return () => window.removeEventListener("resize", updateQuoteHeight);
+    searchBooks("fiction", 20)
+      .then((data) => {
+        if (data.items && data.items.length > 0) {
+          const shuffled = data.items.sort(() => 0.5 - Math.random());
+          const randomThree = shuffled.slice(0, 3).map((item) => {
+            const info = item.volumeInfo || {};
+            return {
+              id: item.id,
+              title: info.title || "Untitled",
+              author: (info.authors || ["Unknown"]).join(", "),
+              description: info.description || "No description available.",
+              coverImage: info.imageLinks?.thumbnail || "/default-book.png",
+            };
+          });
+          setRandomBooks(randomThree);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch random books", err);
+      });
   }, []);
 
   return (
     <Router>
       <div className={`page ${isLoggedIn && isDarkMode ? "dark" : ""}`}>
-        <QuoteBar />
-        <Header
-          onSignInClick={openLoginModal}
-          onSignUpClick={openRegisterModal}
-        />
+        <div className="fixed-top-bar">
+          <QuoteBar />
+          <Header
+            onSignInClick={openLoginModal}
+            onSignUpClick={openRegisterModal}
+          />
+        </div>
 
         <Routes>
           <Route
             path="/"
-            element={<Main onSignUpClick={openRegisterModal} />}
+            element={
+              <Main
+                onSignUpClick={openRegisterModal}
+                selectedBook={selectedBook}
+                setSelectedBook={setSelectedBook}
+                randomBooks={randomBooks}
+              />
+            }
           />
           <Route path="/about" element={<About />} />
           <Route
@@ -76,6 +109,11 @@ function App() {
             onClose={closeModal}
             onSignUpClick={openRegisterModal}
             contentClassName="modal__content--form"
+            onLogin={({ email, password }) => {
+              console.log("Logging in with:", email, password);
+              setIsLoggedIn(true);
+              closeModal();
+            }}
           />
         )}
 
@@ -83,6 +121,12 @@ function App() {
           <RegisterModal
             onClose={closeModal}
             onSignInClick={openLoginModal}
+            onRegister={(userData) => {
+              console.log("Registering:", userData);
+              // TODO: send to backend
+              setIsLoggedIn(true);
+              closeModal();
+            }}
             contentClassName="modal__content--form"
           />
         )}

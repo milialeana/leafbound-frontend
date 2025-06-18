@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "./RegisterModal.css";
 
-function RegisterModal({ onClose, onSignInClick }) {
+function RegisterModal({ onClose, onSignInClick, onRegister }) {
   const {
     values,
     handleChange,
@@ -14,18 +14,28 @@ function RegisterModal({ onClose, onSignInClick }) {
     resetForm,
   } = useFormAndValidation();
 
+  useEffect(() => {
+    resetForm();
+  }, []);
+
+  const validatePasswords = () => {
+    if (values.password !== values.confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match.",
+      }));
+      setIsValid(false);
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newErrors = { ...errors };
-    if (values.password !== values.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
-      setErrors(newErrors);
-      setIsValid(false);
-      return;
-    }
+    if (!validatePasswords()) return;
 
     console.log("Register form submitted:", values);
+    if (onRegister) onRegister(values);
 
     resetForm();
     onClose();
@@ -45,6 +55,7 @@ function RegisterModal({ onClose, onSignInClick }) {
             required
             value={values.username || ""}
             onChange={handleChange}
+            autoComplete="username"
           />
           {errors.username && (
             <span className="modal-form__error">{errors.username}</span>
@@ -60,6 +71,7 @@ function RegisterModal({ onClose, onSignInClick }) {
             placeholder="https://example.com/image.jpg"
             value={values.profileImage || ""}
             onChange={handleChange}
+            autoComplete="photo"
           />
           {errors.profileImage && (
             <span className="modal-form__error">{errors.profileImage}</span>
@@ -75,6 +87,7 @@ function RegisterModal({ onClose, onSignInClick }) {
             required
             value={values.email || ""}
             onChange={handleChange}
+            autoComplete="email"
           />
           {errors.email && (
             <span className="modal-form__error">{errors.email}</span>
@@ -90,6 +103,7 @@ function RegisterModal({ onClose, onSignInClick }) {
             required
             value={values.password || ""}
             onChange={handleChange}
+            autoComplete="new-password"
           />
           {errors.password && (
             <span className="modal-form__error">{errors.password}</span>
@@ -105,6 +119,7 @@ function RegisterModal({ onClose, onSignInClick }) {
             required
             value={values.confirmPassword || ""}
             onChange={handleChange}
+            autoComplete="new-password"
           />
           {errors.confirmPassword && (
             <span className="modal-form__error">{errors.confirmPassword}</span>

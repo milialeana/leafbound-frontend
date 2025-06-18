@@ -1,22 +1,67 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./QuoteBar.css";
 import leafCrown from "../../assets/leaf-crown.png";
+import quotes from "../../utils/quotes";
 
-function QuoteBar() {
+function QuoteBar({ onHeightChange }) {
+  const [quote, setQuote] = useState(() => {
+    return quotes[Math.floor(Math.random() * quotes.length)];
+  });
+  const [fade, setFade] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const quoteRef = useRef();
+
+  const getNewQuote = (excludeQuote) => {
+    const filtered = quotes.filter((q) => q.id !== excludeQuote?.id);
+    return filtered[Math.floor(Math.random() * filtered.length)];
+  };
+
+  const handleRefresh = () => {
+    setFade(true);
+    setTimeout(() => {
+      setQuote((prev) => getNewQuote(prev));
+      setFade(false);
+    }, 400);
+  };
+
+  const formatQuote = (quote) => (
+    <>
+      {quote.quote}
+      <span className="quote-bar__mark">”</span> — <em>{quote.book}</em> by{" "}
+      {quote.author}
+    </>
+  );
+
+  useEffect(() => {
+    setQuote(getNewQuote(null));
+  }, []);
+
+  useEffect(() => {
+    if (!quoteRef.current || !onHeightChange) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      onHeightChange(Math.ceil(entry.contentRect.height));
+    });
+
+    observer.observe(quoteRef.current);
+    return () => observer.disconnect();
+  }, [onHeightChange]);
+
   return (
-    <div className="quote-bar">
-      <p>
-        <img src={leafCrown} alt="leaf" className="quote-leaf" />
-        <span className="quote-mark">“</span>But such was his state of mind that
-        two bottles were not enough to extinguish his thoughts; so he remained,
-        too drunk to fetch any more wine, not drunk enough to forget, seated in
-        front of his two empty bottles, with his elbows on a rickety table,
-        watching all the specters that Hoffman scattered across manuscripts
-        moist with punch, dancing like a cloud of fantastic black dust in the
-        shadows thrown by his long-wicked candle.
-        <span className="quote-mark">”</span> -{" "}
-        <em>The Count of Monte Cristo</em>
-        <img src={leafCrown} alt="leaf" className="quote-leaf" />
+    <div className="quote-bar" id="quote-bar" ref={quoteRef}>
+      <button className="quote-bar__refresh" onClick={handleRefresh}>
+        ↻
+      </button>
+      <p
+        className={`quote-bar__text ${fade ? "fade" : ""} ${
+          expanded ? "quote-bar__text--expanded" : "quote-bar__text--truncated"
+        }`}
+      >
+        <img src={leafCrown} alt="leaf" className="quote-bar__leaf" />
+        <span className="quote-bar__mark">“</span>
+        {quote ? formatQuote(quote) : <em>Loading quote...</em>}
+        <img src={leafCrown} alt="leaf" className="quote-bar__leaf" />
       </p>
     </div>
   );

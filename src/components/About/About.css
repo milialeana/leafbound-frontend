@@ -9,7 +9,7 @@
   color: #2e2e2e;
 }
 
-.about-page {
+.about__background {
   background-image: url("../../assets/about-background.jpg");
   background-size: cover;
   background-position: center;
@@ -40,4 +40,20 @@
   line-height: 1.8;
   max-width: 650px;
   margin: 0 auto;
+}
+
+@media (max-width: 627px) {
+  .about {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .about__title {
+    font-size: 1.8rem;
+  }
+
+  .about__text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }

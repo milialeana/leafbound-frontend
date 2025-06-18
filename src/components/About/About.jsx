@@ -3,7 +3,7 @@ import "./About.css";
 
 function About() {
   return (
-    <div className="about-page">
+    <div className="about__background">
       <section className="about">
         <h1 className="about__title">About Leafbound</h1>
         <p className="about__text">
