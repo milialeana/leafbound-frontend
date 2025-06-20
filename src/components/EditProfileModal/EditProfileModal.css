@@ -1,0 +1,97 @@
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.edit-profile-form__title {
+  font-size: 1.75rem;
+  font-family: "Averia Serif Libre", serif;
+  margin-bottom: 1rem;
+  color: #2f5637;
+  text-align: center;
+}
+
+.edit-profile-form__label {
+  font-family: "Averia Serif Libre", serif;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #2e2e2e;
+}
+
+.edit-profile-form__input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: white;
+  color: #2e2e2e;
+  transition: border-color 0.2s ease;
+}
+
+.edit-profile-form__input:focus {
+  border-color: #3c6e47;
+}
+
+.edit-profile-form__button {
+  background-color: #3c6e47;
+  color: white;
+  font-family: "Averia Serif Libre", serif;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-form__button:hover {
+  background-color: #2f5637;
+}
+
+.modal.dark .edit-profile-form__label {
+  color: #d8f3dc;
+}
+
+.modal.dark .edit-profile-form__input {
+  background-color: #2a2a2a;
+  color: #f4f4f4;
+  border-color: #555;
+}
+
+.modal.dark .edit-profile-form__input:focus {
+  border-color: #d6b007;
+}
+
+.modal.dark .edit-profile-form__title {
+  color: #d6b007;
+}
+
+.modal.dark .edit-profile-form__button {
+  background-color: #3c6e47;
+}
+
+.modal.dark .edit-profile-form__button:hover {
+  background-color: #2f5637;
+}
+
+@media (max-width: 627px) {
+  .edit-profile-form__title {
+    font-size: 1.5rem;
+  }
+
+  .edit-profile-form__input {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .edit-profile-form__button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}

@@ -10,7 +10,14 @@ import quotes from "../../utils/quotes";
 import "./Main.css";
 import "../ModalPreview/ModalPreview.css";
 
-function Main({ onSignUpClick, selectedBook, setSelectedBook, randomBooks }) {
+function Main({
+  onSignUpClick,
+  selectedBook,
+  setSelectedBook,
+  randomBooks,
+  isLoggedIn,
+  isDarkMode,
+}) {
   const [query, setQuery] = useState("");
   const [allBooks, setAllBooks] = useState(randomBooks || []);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -76,6 +83,7 @@ function Main({ onSignUpClick, selectedBook, setSelectedBook, randomBooks }) {
         onClose={handleCloseModal}
         contentClassName="modal__content--preview-green"
         isPreview={true}
+        isDarkMode={isDarkMode}
       >
         <div className="modal-preview">
           <img
@@ -96,89 +104,97 @@ function Main({ onSignUpClick, selectedBook, setSelectedBook, randomBooks }) {
   }
 
   return (
-    <main className="main main--background">
-      <h2 className="main__tagline">
-        <img src={leafCrown} alt="Leaf" className="main__tagline-leaf" />
-        Grow your library,
-        <br />
-        Leaf by Leaf
-      </h2>
+    <>
+      <main className={`main main--background ${isDarkMode ? "dark" : ""}`}>
+        <h2 className="main__tagline">
+          <img src={leafCrown} alt="Leaf" className="main__tagline-leaf" />
+          Grow your library,
+          <br />
+          Leaf by Leaf
+        </h2>
 
-      <div className="main__quote-toggle">
-        {isQuoteVisible ? (
-          <blockquote
-            className="main__quote-box"
-            onClick={() => setIsQuoteVisible(false)}
-            aria-label="Hide quote"
-          >
-            “{quote.quote}”
-            <br />
-            <cite>
-              – {quote.author}, <em>{quote.book}</em>
-            </cite>
-          </blockquote>
-        ) : (
-          <button
-            className="main__quote-button"
-            onClick={() => {
-              setQuote(getRandomQuote(quote.id));
-              setIsQuoteVisible(true);
-            }}
-            aria-label="Show quote"
-          >
-            <img
-              src={quoteleaf}
-              alt="Toggle quote"
-              className="main__quote-icon"
-            />
-          </button>
-        )}
-      </div>
+        <div className="main__quote-toggle">
+          {isQuoteVisible ? (
+            <blockquote
+              className="main__quote-box"
+              onClick={() => setIsQuoteVisible(false)}
+              aria-label="Hide quote"
+            >
+              “{quote.quote}”
+              <br />
+              <cite>
+                – {quote.author}, <em>{quote.book}</em>
+              </cite>
+            </blockquote>
+          ) : (
+            <button
+              className="main__quote-button"
+              onClick={() => {
+                setQuote(getRandomQuote(quote.id));
+                setIsQuoteVisible(true);
+              }}
+              aria-label="Show quote"
+            >
+              <img
+                src={quoteleaf}
+                alt="Toggle quote"
+                className="main__quote-icon"
+              />
+            </button>
+          )}
+        </div>
 
-      <div className="main__actions">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by title, author, or category"
-          className="main__input"
-        />
-        <button
-          className="main__button main__button--search"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
-        <button
-          className="main__button main__button--signup"
-          onClick={onSignUpClick}
-        >
-          Sign Up to Save Books
-        </button>
-      </div>
-
-      {isLoading && <Preloader />}
-      {error && <p className="main__error">{error}</p>}
-
-      <div className="main__grid">
-        {allBooks.slice(0, visibleCount).map((book) => (
-          <BookCard key={book.id} book={book} onPreview={handlePreview} />
-        ))}
-      </div>
-
-      {!isLoading && !error && visibleCount < allBooks.length && (
-        <div style={{ textAlign: "center", margin: "20px" }}>
+        <div className="main__actions">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by title, author, or category"
+            className="main__input"
+          />
           <button
             className="main__button main__button--search"
-            onClick={handleShowMore}
+            onClick={handleSearch}
           >
-            Show More
+            Search
           </button>
+          {!isLoggedIn && (
+            <button
+              className="main__button main__button--signup"
+              onClick={onSignUpClick}
+            >
+              Sign Up to Save Books
+            </button>
+          )}
         </div>
-      )}
 
+        {isLoading && <Preloader />}
+        {error && <p className="main__error">{error}</p>}
+
+        <div className="main__grid">
+          {allBooks.slice(0, visibleCount).map((book) => (
+            <BookCard
+              key={book.id}
+              book={book}
+              onPreview={handlePreview}
+              isDarkMode={isDarkMode}
+            />
+          ))}
+        </div>
+
+        {!isLoading && !error && visibleCount < allBooks.length && (
+          <div style={{ textAlign: "center", margin: "20px" }}>
+            <button
+              className="main__button main__button--search"
+              onClick={handleShowMore}
+            >
+              Show More
+            </button>
+          </div>
+        )}
+      </main>
       {renderPreviewModal()}
-    </main>
+    </>
   );
 }
 

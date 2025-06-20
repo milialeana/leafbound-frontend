@@ -76,6 +76,27 @@
   transform: translateX(-25px);
 }
 
+.modal__content--preview-green.dark {
+  background: linear-gradient(to bottom right, #0d1b16, #18362c);
+  border: 1px solid #2a5242;
+}
+
+.modal-preview.dark {
+  background: rgba(20, 20, 20, 0.6);
+}
+
+.modal-preview.dark .modal-preview__title {
+  color: #e6ffe6;
+}
+
+.modal-preview.dark .modal-preview__author {
+  color: #a8e6cf;
+}
+
+.modal-preview.dark .modal-preview__description {
+  color: #ccc;
+}
+
 @media (max-width: 627px) {
   .modal__content--preview-green {
     max-width: 95vw;

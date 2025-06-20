@@ -3,24 +3,33 @@ import { savedBooks } from "../../utils/savedBooks";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import BookCard from "../BookCard/BookCard";
 import Preloader from "../Preloader/Preloader";
+
 import lightBackgroundImage from "../../assets/light-mode.jpg";
 import darkBackgroundImage from "../../assets/dark-mode.jpg";
 import profilePic from "../../assets/default-avatar.png";
+import leafLightIcon from "../../assets/leaf-light.png";
+import leafDarkIcon from "../../assets/leaf-dark.png";
 import "./Profile.css";
 import "../Pagination/Pagination.css";
 import "../ModalPreview/ModalPreview.css";
 
-function Profile() {
+function Profile({
+  isDarkMode,
+  toggleTheme,
+  isLoggedIn,
+  currentUser,
+  onEditProfileClick,
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
-  const [theme, setTheme] = useState("light");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 15;
 
-  const backgroundImage =
-    theme === "dark" ? darkBackgroundImage : lightBackgroundImage;
+  const backgroundImage = isDarkMode
+    ? darkBackgroundImage
+    : lightBackgroundImage;
 
   const mainStyle = {
     backgroundImage: `url(${backgroundImage})`,
@@ -38,9 +47,6 @@ function Profile() {
     }, 1000);
     return () => clearTimeout(timeout);
   }, []);
-
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
   const handlePreview = (book) => setSelectedBook(book);
   const handleCloseModal = () => setSelectedBook(null);
@@ -103,6 +109,7 @@ function Profile() {
         onClose={handleCloseModal}
         contentClassName="modal__content--preview-green"
         isPreview={true}
+        isDarkMode={isDarkMode}
       >
         <div className="modal-preview">
           <img
@@ -122,16 +129,25 @@ function Profile() {
 
   return (
     <>
-      <main className={`profile ${theme}`} style={mainStyle}>
+      <main
+        className={`profile ${isDarkMode ? "dark" : "light"}`}
+        style={mainStyle}
+      >
         <div className="profile__top-bar">
-          <img src={profilePic} alt="Profile" className="profile__image" />
-          <div className="profile__controls">
-            <button onClick={toggleTheme} className="profile__button">
-              {theme === "light" ? "Dark Mode" : "Light Mode"}
-            </button>
-            <button className="profile__button">Edit Profile</button>
-            <button className="profile__button">Log Out</button>
+          <div
+            className="profile__image-wrapper"
+            onClick={onEditProfileClick}
+            title="Edit profile"
+          >
+            <img
+              src={currentUser.avatar || profilePic}
+              alt={currentUser.name}
+              className="profile__image"
+            />
+            <span className="profile__edit-icon">✏️</span>
           </div>
+
+          <h2 className="profile__name">Welcome, {currentUser.name}!</h2>
         </div>
 
         <div className="profile__search">
@@ -156,6 +172,7 @@ function Profile() {
                   key={book._id}
                   book={book}
                   onPreview={handlePreview}
+                  isDarkMode={isDarkMode}
                 />
               ))}
             </div>
@@ -163,6 +180,18 @@ function Profile() {
           </>
         )}
       </main>
+      <button
+        className="profile__theme-fab"
+        onClick={toggleTheme}
+        title="Toggle Theme"
+      >
+        <img
+          src={isDarkMode ? leafLightIcon : leafDarkIcon}
+          alt="Toggle Theme"
+          className="profile__theme-icon"
+        />
+      </button>
+
       {renderPreviewModal()}
     </>
   );

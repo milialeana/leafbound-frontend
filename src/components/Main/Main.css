@@ -113,6 +113,51 @@
   display: none;
 }
 
+.main.dark {
+  background-color: #1f1f1f;
+  color: #f4f4f4;
+}
+
+.main.dark .main__tagline {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e6ffe6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.main.dark .main__input {
+  background-color: #2b2b2b;
+  color: #f4f4f4;
+  border: 1px solid #555;
+}
+
+.main.dark .main__button--search {
+  background-color: #333;
+  color: #f4f4f4;
+  border: 1px solid #3c6e47;
+}
+
+.main.dark .main__button--search:hover {
+  background-color: #444;
+}
+
+.main.dark .main__button--signup {
+  background-color: #3c6e47;
+  color: white;
+}
+
+.main.dark .main__button--signup:hover {
+  background-color: #2f5637;
+}
+
+.main.dark .main__quote-box {
+  background-color: #2c2c2c;
+  color: #f4f4f4;
+}
+
+.main.dark .main__error {
+  color: #ff9999;
+}
+
 @media (max-width: 627px) {
   .main {
     padding-top: 80px;

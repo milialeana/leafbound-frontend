@@ -4,6 +4,18 @@
   color: #2e2e2e;
 }
 
+.profile__name {
+  font-family: "Averia Serif Libre", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  background-color: #d6b007;
+  border-radius: 8px;
+  padding: 5px;
+  color: #2f5637;
+  margin-left: 0.25rem;
+  margin-right: 700px;
+}
+
 .profile--dark {
   color: #f4f4f4;
 }
@@ -24,12 +36,6 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #3c6e47;
-}
-
-.profile__controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
 }
 
 .profile__button {
@@ -73,43 +79,177 @@
   padding-bottom: 3rem;
 }
 
+.profile__image-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.profile__edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #ffffffdd;
+  color: #3c6e47;
+  border: 2px solid #3c6e47;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.profile__image-wrapper:hover .profile__edit-icon {
+  transform: scale(1.1);
+}
+
+.profile__theme-fab {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background-color: #3c6e47;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  animation: fadeInScale 0.4s ease;
+}
+
+.profile__theme-fab img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.profile__theme-fab:hover {
+  background-color: #2f5637;
+}
+
+.profile.dark .profile__theme-fab {
+  background-color: #2b2b2b;
+}
+
+.profile.dark {
+  color: #f4f4f4;
+  background-color: #1f1f1f;
+}
+
+.profile.dark .profile__name {
+  color: #d8f3dc;
+}
+
+.profile.dark .profile__button {
+  background-color: #3c6e47;
+  color: #fff;
+}
+
+.profile.dark .profile__button:hover {
+  background-color: #2f5637;
+}
+
+.profile.dark .profile__search input {
+  background-color: #2b2b2b;
+  color: #f4f4f4;
+  border: 1px solid #555;
+}
+
+.profile.dark .profile__book-grid {
+  background-color: transparent;
+}
+
+.profile.dark .pagination__button {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.profile.dark .pagination__button--active {
+  background-color: #3c6e47;
+  border-color: #3c6e47;
+  color: white;
+}
+
+.profile.dark .profile__name {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profile.dark .profile__edit-icon {
+  background-color: #333;
+  color: #d6b007;
+  border-color: #d6b007;
+}
+
 @media (max-width: 627px) {
+  .profile {
+    padding: 1rem;
+  }
+
   .profile__top-bar {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1rem;
-    padding: 1rem;
+    margin-bottom: 2rem;
   }
 
   .profile__image {
     width: 100px;
     height: 100px;
+    margin-top: 0;
+  }
+
+  .profile__name {
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 6px 12px;
+    background-color: #d6b007;
+    border-radius: 8px;
+    color: #2f5637;
+    font-weight: 600;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .profile__controls {
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: 0.75rem;
     width: 100%;
   }
 
-  .profile__button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 12px;
+  .profile__theme-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .profile__search {
+    margin: 1.5rem 0;
   }
 
   .profile__search input {
     width: 100%;
     font-size: 1rem;
     padding: 0.75rem;
-    margin: 1rem 0;
+    margin: 0 auto;
+    display: block;
   }
 
   .profile__book-grid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
     gap: 1rem;
+    padding: 0 0.5rem 2rem;
   }
 
   .pagination {
@@ -122,5 +262,16 @@
   .pagination__button {
     font-size: 0.95rem;
     padding: 0.5rem 1rem;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

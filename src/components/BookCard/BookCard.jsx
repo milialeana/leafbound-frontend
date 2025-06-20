@@ -2,9 +2,9 @@ import React from "react";
 import "./BookCard.css";
 import "../ModalPreview/ModalPreview.css";
 
-function BookCard({ book, onPreview }) {
+function BookCard({ book, onPreview, isDarkMode }) {
   return (
-    <div className="book-card">
+    <div className={`book-card ${isDarkMode ? "dark" : ""}`}>
       <img
         src={book.coverImage}
         alt={book.title}

@@ -8,6 +8,7 @@ function ModalWithForm({
   children,
   contentClassName = "",
   isPreview = false,
+  isDarkMode = false,
 }) {
   function handleBackdropClick(e) {
     if (e.target.classList.contains("modal")) {
@@ -16,8 +17,15 @@ function ModalWithForm({
   }
 
   return (
-    <div className="modal" onClick={handleBackdropClick}>
-      <div className={`modal__content ${contentClassName}`}>
+    <div
+      className={`modal ${isDarkMode ? "dark" : ""}`}
+      onClick={handleBackdropClick}
+    >
+      <div
+        className={`modal__content ${contentClassName} ${
+          isDarkMode ? "dark" : ""
+        }`}
+      >
         <button
           className={`modal__close ${isPreview ? "modal__close--large" : ""}`}
           onClick={onClose}

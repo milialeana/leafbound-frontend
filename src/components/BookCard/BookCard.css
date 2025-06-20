@@ -61,6 +61,28 @@
   -webkit-box-orient: vertical;
 }
 
+.book-card.dark {
+  background-color: #1f1f1f;
+  color: #f4f4f4;
+}
+
+.book-card.dark .book-card__content {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.book-card.dark .book-card__title {
+  color: #d8f3dc;
+}
+
+.book-card.dark .book-card__author {
+  color: #ccc;
+}
+
+.book-card.dark .book-card__description {
+  color: #bbb;
+}
+
 @media (max-width: 627px) {
   .book-card {
     flex-direction: column;

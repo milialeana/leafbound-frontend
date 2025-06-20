@@ -8,6 +8,7 @@ import LoginModal from "../LoginModal/LoginModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import QuoteBar from "../QuoteBar/QuoteBar";
 import Profile from "../Profile/Profile";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { searchBooks } from "../../utils/GoogleBooksApi";
 
 function App() {
@@ -15,11 +16,24 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [randomBooks, setRandomBooks] = useState([]);
+
+  const [currentUser, setCurrentUser] = useState({
+    name: "Kate",
+    avatar: "https://i.pravatar.cc/150?u=fakeuser",
+  });
 
   const openLoginModal = () => {
     setActiveModal("login");
     setSelectedBook(null);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setActiveModal(null);
+    setSelectedBook(null);
+    // Optionally reset currentUser too
   };
 
   const openRegisterModal = () => {
@@ -72,8 +86,12 @@ function App() {
         <div className="fixed-top-bar">
           <QuoteBar />
           <Header
+            isLoggedIn={isLoggedIn}
+            onLogout={handleLogout}
+            currentUser={currentUser}
             onSignInClick={openLoginModal}
             onSignUpClick={openRegisterModal}
+            isDarkMode={isDarkMode}
           />
         </div>
 
@@ -86,6 +104,7 @@ function App() {
                 selectedBook={selectedBook}
                 setSelectedBook={setSelectedBook}
                 randomBooks={randomBooks}
+                isDarkMode={isDarkMode}
               />
             }
           />
@@ -97,6 +116,8 @@ function App() {
                 isDarkMode={isDarkMode}
                 toggleTheme={toggleTheme}
                 isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+                onEditProfileClick={() => setIsEditModalOpen(true)}
               />
             }
           />
@@ -128,6 +149,23 @@ function App() {
               closeModal();
             }}
             contentClassName="modal__content--form"
+          />
+        )}
+
+        {isEditModalOpen && (
+          <EditProfileModal
+            onClose={() => setIsEditModalOpen(false)}
+            onSave={(updatedData) => {
+              console.log("Updated Profile:", updatedData);
+              setCurrentUser((prev) => ({
+                ...prev,
+                ...updatedData,
+                avatar: updatedData.avatar || prev.avatar,
+              }));
+              setIsEditModalOpen(false);
+            }}
+            isDarkMode={isDarkMode}
+            currentUser={currentUser}
           />
         )}
       </div>
