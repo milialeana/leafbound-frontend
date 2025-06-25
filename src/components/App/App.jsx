@@ -129,7 +129,7 @@ function App() {
   const openEditProfile = () => setIsEditModalOpen(true);
 
   return (
-    <Router basename="/leafbound">
+    <Router basename="/leafbound-frontend">
       <div className={`page ${isLoggedIn && isDarkMode ? "dark" : ""}`}>
         <div className="fixed-top-bar">
           <QuoteBar />
