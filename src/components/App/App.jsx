@@ -26,7 +26,6 @@ function App() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [randomBooks, setRandomBooks] = useState([]);
-
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
     return savedUser
