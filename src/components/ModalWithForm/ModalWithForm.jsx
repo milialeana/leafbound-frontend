@@ -1,7 +1,6 @@
-import React from "react";
 import "./ModalWithForm.css";
 import leafXIcon from "../../assets/leaf-x.png";
-import "../ModalPreview/ModalPreview.css";
+import "../BookModalPreview/BookModalPreview.css";
 
 function ModalWithForm({
   onClose,

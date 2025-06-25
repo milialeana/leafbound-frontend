@@ -1,19 +1,28 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
-import "./LoginModal.css";
+import { login } from "../../utils/auth";
 
 function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
+  const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     resetForm();
+    setApiError("");
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(values);
+    login(values)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        onLogin(data);
+      })
+      .catch(() => {
+        setApiError("Invalid email or password.");
+      });
   };
 
   return (
@@ -51,6 +60,8 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
             <span className="modal-form__error">{errors.password}</span>
           )}
         </label>
+
+        {apiError && <p className="modal-form__error">{apiError}</p>}
 
         <button
           type="submit"

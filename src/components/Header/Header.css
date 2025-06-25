@@ -83,25 +83,7 @@
   text-orientation: mixed;
   transform: rotate(180deg);
   line-height: 1;
-}
-
-.header__menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1.8rem;
-  cursor: pointer;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  line-height: 1;
   transition: transform 0.3s ease;
-}
-
-.header__menu-toggle--open {
-  transform: rotate(180deg) scale(1.2);
-  color: #3c6e47;
 }
 
 .header__dropdown {
@@ -232,7 +214,34 @@
 
   .header__menu-toggle {
     display: block;
+    font-size: 1.5rem;
+    padding: 4px 10px;
+    background: none;
+    border: none;
+    color: #3c6e47;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-right: 10px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    line-height: 1;
+    transition: transform 0.3s ease;
   }
+
+  .header__menu-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .header__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 9px;
+  }
+
   .header__auth-buttons {
     width: 100%;
     display: flex;
@@ -262,16 +271,6 @@
     font-size: 1rem;
     font-weight: 500;
     white-space: nowrap;
-  }
-
-  .header__menu-toggle {
-    font-size: 1.5rem;
-    padding: 4px 10px;
-    background: none;
-    border: none;
-    color: #3c6e47;
-    cursor: pointer;
-    align-self: center;
   }
 }
 

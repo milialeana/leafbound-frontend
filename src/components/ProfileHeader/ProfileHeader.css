@@ -1,0 +1,131 @@
+.profile__top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.profile__image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile__image {
+  margin-top: 15px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3c6e47;
+}
+
+.profile__edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #ffffffdd;
+  color: #3c6e47;
+  border: 2px solid #3c6e47;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.profile__info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(8px);
+  border: 1px solid #3c6e47;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.profile__name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #a89804;
+}
+
+.profile__logout-button {
+  font-size: 1rem;
+  background-color: transparent;
+  border: 1px solid #3c6e47;
+  color: #3c6e47;
+
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Averia Serif Libre", serif;
+}
+
+.profile__logout-button:hover {
+  background-color: #3c6e47;
+  color: white;
+}
+
+.profile.dark .profile__name {
+  color: #d8f3dc;
+}
+
+.profile.dark .profile__edit-icon {
+  background-color: #333;
+  color: #d6b007;
+  border-color: #d6b007;
+}
+
+.profile.dark .profile__logout-button {
+  color: #d6b007;
+  border-color: #d6b007;
+}
+
+.profile.dark .profile__logout-button:hover {
+  background-color: #d6b007;
+  color: #2a2a2a;
+}
+
+@media (max-width: 627px) {
+  .profile__top-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile__image {
+    width: 100px;
+    height: 100px;
+    margin-top: 0;
+  }
+
+  .profile__name {
+    font-size: 1.25rem;
+    margin: 0;
+    padding: 6px 12px;
+    background-color: #d6b007;
+    border-radius: 8px;
+    color: #2f5637;
+    font-weight: 600;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .profile__logout-button {
+    display: none;
+  }
+}

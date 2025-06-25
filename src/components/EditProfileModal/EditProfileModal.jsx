@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./EditProfileModal.css";
 
@@ -8,7 +8,7 @@ function EditProfileModal({ onClose, onSave, isDarkMode, currentUser }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({ name, email, password, avatar });
+    onSave({ name, avatar });
   };
 
   return (

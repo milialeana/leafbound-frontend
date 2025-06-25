@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
+import { register } from "../../utils/auth";
 import "./RegisterModal.css";
 
 function RegisterModal({ onClose, onSignInClick, onRegister }) {
@@ -14,8 +15,11 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
     resetForm,
   } = useFormAndValidation();
 
+  const [apiError, setApiError] = useState("");
+
   useEffect(() => {
     resetForm();
+    setApiError("");
   }, []);
 
   const validatePasswords = () => {
@@ -33,48 +37,32 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validatePasswords()) return;
-
-    console.log("Register form submitted:", values);
-    if (onRegister) onRegister(values);
-
-    resetForm();
-    onClose();
+    register(values)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        onRegister(data);
+      })
+      .catch(() => {
+        setApiError("Registration failed. Try a different email.");
+      });
   };
 
   return (
     <ModalWithForm onClose={onClose} contentClassName="modal__content--form">
-      <h2 className="modal-form__title">Join Leafbound</h2>
+      <h2 className="modal-form__title">Create Account</h2>
       <form className="modal-form" onSubmit={handleSubmit} noValidate>
         <label className="modal-form__label">
-          Username
+          Name
           <input
             type="text"
-            name="username"
+            name="name"
             className="modal-form__input"
-            minLength="5"
             required
-            value={values.username || ""}
+            value={values.name || ""}
             onChange={handleChange}
-            autoComplete="username"
           />
-          {errors.username && (
-            <span className="modal-form__error">{errors.username}</span>
-          )}
-        </label>
-
-        <label className="modal-form__label">
-          Profile Picture URL
-          <input
-            type="url"
-            name="profileImage"
-            className="modal-form__input"
-            placeholder="https://example.com/image.jpg"
-            value={values.profileImage || ""}
-            onChange={handleChange}
-            autoComplete="photo"
-          />
-          {errors.profileImage && (
-            <span className="modal-form__error">{errors.profileImage}</span>
+          {errors.name && (
+            <span className="modal-form__error">{errors.name}</span>
           )}
         </label>
 
@@ -87,7 +75,6 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             required
             value={values.email || ""}
             onChange={handleChange}
-            autoComplete="email"
           />
           {errors.email && (
             <span className="modal-form__error">{errors.email}</span>
@@ -103,7 +90,6 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             required
             value={values.password || ""}
             onChange={handleChange}
-            autoComplete="new-password"
           />
           {errors.password && (
             <span className="modal-form__error">{errors.password}</span>
@@ -119,25 +105,26 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             required
             value={values.confirmPassword || ""}
             onChange={handleChange}
-            autoComplete="new-password"
           />
           {errors.confirmPassword && (
             <span className="modal-form__error">{errors.confirmPassword}</span>
           )}
         </label>
 
+        {apiError && <p className="modal-form__error">{apiError}</p>}
+
         <button
           type="submit"
           className="modal-form__button"
           disabled={!isValid}
         >
-          Sign Up
+          Register
         </button>
 
         <p className="modal-form__footer">
           Already have an account?{" "}
           <span className="modal-form__link" onClick={onSignInClick}>
-            Log In
+            Sign In
           </span>
         </p>
       </form>

@@ -1,9 +1,9 @@
-import React from "react";
 import "./Footer.css";
 import { Link, useLocation } from "react-router-dom";
 
 function Footer() {
   const location = useLocation();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="footer">
@@ -14,7 +14,7 @@ function Footer() {
           </li>
         </ul>
       )}
-      <p>&copy; 2025 Leafbound. All rights reserved.</p>
+      <p>&copy; {currentYear} Leafbound. All rights reserved.</p>
     </footer>
   );
 }

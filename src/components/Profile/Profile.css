@@ -4,38 +4,8 @@
   color: #2e2e2e;
 }
 
-.profile__name {
-  font-family: "Averia Serif Libre", serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  background-color: #d6b007;
-  border-radius: 8px;
-  padding: 5px;
-  color: #2f5637;
-  margin-left: 0.25rem;
-  margin-right: 700px;
-}
-
 .profile--dark {
   color: #f4f4f4;
-}
-
-.profile__top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.profile__image {
-  margin-top: 15px;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #3c6e47;
 }
 
 .profile__button {
@@ -75,7 +45,7 @@
   justify-items: center;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 15px auto;
   padding-bottom: 3rem;
 }
 
@@ -83,23 +53,6 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
-}
-
-.profile__edit-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #ffffffdd;
-  color: #3c6e47;
-  border: 2px solid #3c6e47;
-  border-radius: 50%;
-  font-size: 0.85rem;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
 }
 
 .profile__image-wrapper:hover .profile__edit-icon {
@@ -143,10 +96,6 @@
   background-color: #1f1f1f;
 }
 
-.profile.dark .profile__name {
-  color: #d8f3dc;
-}
-
 .profile.dark .profile__button {
   background-color: #3c6e47;
   color: #fff;
@@ -178,48 +127,9 @@
   color: white;
 }
 
-.profile.dark .profile__name {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-.profile.dark .profile__edit-icon {
-  background-color: #333;
-  color: #d6b007;
-  border-color: #d6b007;
-}
-
 @media (max-width: 627px) {
   .profile {
     padding: 1rem;
-  }
-
-  .profile__top-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .profile__image {
-    width: 100px;
-    height: 100px;
-    margin-top: 0;
-  }
-
-  .profile__name {
-    font-size: 1.25rem;
-    margin: 0;
-    padding: 6px 12px;
-    background-color: #d6b007;
-    border-radius: 8px;
-    color: #2f5637;
-    font-weight: 600;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .profile__controls {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./QuoteBar.css";
 import leafCrown from "../../assets/leaf-crown.png";
 import quotes from "../../utils/quotes";

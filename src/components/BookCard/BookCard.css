@@ -9,6 +9,7 @@
   flex-direction: column;
   margin: 0;
   padding-bottom: 5px;
+  position: relative;
 }
 
 .book-card__image {
@@ -16,7 +17,6 @@
   height: 300px;
   object-fit: cover;
   border-radius: 10px 10px 0 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -34,7 +34,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 0 0 10px 10px;
 }
 
@@ -61,6 +60,151 @@
   -webkit-box-orient: vertical;
 }
 
+.book-card__genre-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-bottom: 6px;
+  margin-left: 2px;
+  background-color: #ccc;
+  display: inline-block;
+  cursor: help;
+}
+
+.book-card__genre-dot:hover::after {
+  content: attr(title);
+  position: absolute;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.book-card.dark .book-card__genre-badge {
+  background-color: #d6b007;
+  color: #1f1f1f;
+}
+
+.book-card__save-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 2;
+}
+
+.book-card__save-button:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.book-card__save-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.book-card {
+  position: relative;
+}
+
+.book-card__meta {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 6px;
+}
+
+.book-card__buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.book-card__buttons button {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #3c6e47;
+  color: white;
+  cursor: pointer;
+}
+
+.book-card__buttons button:hover {
+  background-color: #2f5637;
+}
+
+.book-card__meta {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #444;
+  text-align: left;
+}
+
+.book-card__progress {
+  font-size: 0.75rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.book-card__hover-notes {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #2c2c2c;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  max-width: 180px;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.book-card__image-wrapper:hover .book-card__hover-notes {
+  opacity: 1;
+}
+
+.book-card:hover .book-card__hover-notes {
+  opacity: 1;
+}
+
+.book-card.dark .book-card__meta {
+  color: #bbb;
+}
+
+.book-card__meta div {
+  margin-bottom: 2px;
+}
+
+.book-card.dark .book-card__meta {
+  color: #aaa;
+}
+
 .book-card.dark {
   background-color: #1f1f1f;
   color: #f4f4f4;
@@ -81,6 +225,42 @@
 
 .book-card.dark .book-card__description {
   color: #bbb;
+}
+
+.book-card.dark .book-card__save-button {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.book-card.dark .book-card__save-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.genre-fantasy {
+  background-color: #a16ae8;
+}
+.genre-romance {
+  background-color: #f473b9;
+}
+.genre-horror {
+  background-color: #8b0000;
+}
+.genre-sci-fi {
+  background-color: #00bcd4;
+}
+.genre-historical {
+  background-color: #d4af37;
+}
+.genre-non-fiction {
+  background-color: #4caf50;
+}
+.genre-mystery {
+  background-color: #6a5acd;
+}
+.genre-young-adult {
+  background-color: #ff9800;
+}
+
+.genre-unknown {
+  background-color: #999;
 }
 
 @media (max-width: 627px) {

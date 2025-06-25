@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { savedBooks } from "../../utils/savedBooks";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { useEffect, useState } from "react";
 import BookCard from "../BookCard/BookCard";
+import SaveBookModal from "../SaveBookModal/SaveBookModal";
+import ProfileSearchBar from "../ProfileSearchBar/ProfileSearchBar";
+import ProfileHeader from "../ProfileHeader/ProfileHeader";
+import Pagination from "../Pagination/Pagination";
+import BookModalPreview from "../BookModalPreview/BookModalPreview";
 import Preloader from "../Preloader/Preloader";
 
 import lightBackgroundImage from "../../assets/light-mode.jpg";
 import darkBackgroundImage from "../../assets/dark-mode.jpg";
-import profilePic from "../../assets/default-avatar.png";
 import leafLightIcon from "../../assets/leaf-light.png";
 import leafDarkIcon from "../../assets/leaf-dark.png";
+
 import "./Profile.css";
-import "../Pagination/Pagination.css";
-import "../ModalPreview/ModalPreview.css";
 
 function Profile({
   isDarkMode,
@@ -19,148 +20,110 @@ function Profile({
   isLoggedIn,
   currentUser,
   onEditProfileClick,
+  setCurrentUser,
+  showToast,
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [bookToEdit, setBookToEdit] = useState(null);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({
+    status: "",
+    genre: "",
+    progress: "",
+    isFavorite: false,
+  });
+
   const booksPerPage = 15;
-
-  const backgroundImage = isDarkMode
-    ? darkBackgroundImage
-    : lightBackgroundImage;
-
-  const mainStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-    fontFamily: '"Averia Serif Libre", serif',
-    paddingTop: "130px",
-  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setBooks(savedBooks);
+      setBooks(currentUser.savedBooks || []);
       setIsLoading(false);
-    }, 1000);
+    }, 500);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [currentUser.savedBooks]);
 
   const handlePreview = (book) => setSelectedBook(book);
-  const handleCloseModal = () => setSelectedBook(null);
+  const handleEdit = (book) => setBookToEdit(book);
 
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase()) ||
-      book.genre?.toLowerCase().includes(search.toLowerCase())
-  );
+  const handleRemove = (id) => {
+    setBooks((prev) => prev.filter((b) => (b._id || b.id) !== id));
+    setCurrentUser((prev) => ({
+      ...prev,
+      savedBooks: prev.savedBooks.filter((b) => (b._id || b.id) !== id),
+    }));
+    showToast("Book removed from your library");
+  };
 
-  const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+  const handleSearchChange = (val) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (type, value) => {
+    setFilters((prev) => ({ ...prev, [type]: value }));
+    setCurrentPage(1);
+  };
+
+  const filteredBooks = books
+    .filter(
+      (book) =>
+        book.title.toLowerCase().includes(search.toLowerCase()) ||
+        book.author.toLowerCase().includes(search.toLowerCase()) ||
+        book.genre?.toLowerCase().includes(search.toLowerCase())
+    )
+    .filter((book) => (filters.status ? book.status === filters.status : true))
+    .filter((book) => (filters.genre ? book.genre === filters.genre : true))
+    .filter((book) =>
+      filters.progress ? book.progress === filters.progress : true
+    )
+    .filter((book) => !filters.isFavorite || book.isFavorite);
+
+  const sortedBooks = [...filteredBooks].sort((a, b) => {
+    if (b.isFavorite && !a.isFavorite) return 1;
+    if (a.isFavorite && !b.isFavorite) return -1;
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedBooks.length / booksPerPage);
   const startIndex = (currentPage - 1) * booksPerPage;
-  const currentBooks = filteredBooks.slice(
-    startIndex,
-    startIndex + booksPerPage
-  );
-
-  function renderPagination() {
-    if (totalPages <= 1) return null;
-
-    return (
-      <div className="pagination">
-        <button
-          className="pagination__button"
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          ‹ Prev
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`pagination__button ${
-              currentPage === i + 1 ? "pagination__button--active" : ""
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button
-          className="pagination__button"
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-        >
-          Next ›
-        </button>
-      </div>
-    );
-  }
-
-  function renderPreviewModal() {
-    if (!selectedBook) return null;
-
-    return (
-      <ModalWithForm
-        onClose={handleCloseModal}
-        contentClassName="modal__content--preview-green"
-        isPreview={true}
-        isDarkMode={isDarkMode}
-      >
-        <div className="modal-preview">
-          <img
-            src={selectedBook.coverImage}
-            alt={selectedBook.title}
-            className="modal-preview__image"
-          />
-          <h2 className="modal-preview__title">{selectedBook.title}</h2>
-          <h4 className="modal-preview__author">by {selectedBook.author}</h4>
-          <p className="modal-preview__description">
-            {selectedBook.description}
-          </p>
-        </div>
-      </ModalWithForm>
-    );
-  }
+  const currentBooks = sortedBooks.slice(startIndex, startIndex + booksPerPage);
 
   return (
     <>
       <main
         className={`profile ${isDarkMode ? "dark" : "light"}`}
-        style={mainStyle}
+        style={{
+          backgroundImage: `url(${
+            isDarkMode ? darkBackgroundImage : lightBackgroundImage
+          })`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          paddingTop: "130px",
+          fontFamily: '"Averia Serif Libre", serif',
+        }}
       >
-        <div className="profile__top-bar">
-          <div
-            className="profile__image-wrapper"
-            onClick={onEditProfileClick}
-            title="Edit profile"
-          >
-            <img
-              src={currentUser.avatar || profilePic}
-              alt={currentUser.name}
-              className="profile__image"
-            />
-            <span className="profile__edit-icon">✏️</span>
-          </div>
+        <ProfileHeader
+          currentUser={currentUser}
+          onEditProfileClick={onEditProfileClick}
+          onLogout={() => {
+            localStorage.removeItem("jwt");
+            localStorage.removeItem("leafbound-currentUser");
+            localStorage.setItem("leafbound-isLoggedIn", "false");
+            window.location.href = "/";
+          }}
+        />
 
-          <h2 className="profile__name">Welcome, {currentUser.name}!</h2>
-        </div>
-
-        <div className="profile__search">
-          <input
-            type="text"
-            placeholder="Search by title, author, or genre..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
-          />
-        </div>
+        <ProfileSearchBar
+          search={search}
+          onSearchChange={handleSearchChange}
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
 
         {isLoading ? (
           <Preloader />
@@ -169,17 +132,24 @@ function Profile({
             <div className="profile__book-grid">
               {currentBooks.map((book) => (
                 <BookCard
-                  key={book._id}
+                  key={book._id || book.id}
                   book={book}
                   onPreview={handlePreview}
                   isDarkMode={isDarkMode}
+                  onEdit={() => handleEdit(book)}
+                  onRemove={() => handleRemove(book._id || book.id)}
                 />
               ))}
             </div>
-            {renderPagination()}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </>
         )}
       </main>
+
       <button
         className="profile__theme-fab"
         onClick={toggleTheme}
@@ -192,7 +162,34 @@ function Profile({
         />
       </button>
 
-      {renderPreviewModal()}
+      {bookToEdit && (
+        <SaveBookModal
+          book={bookToEdit}
+          onClose={() => setBookToEdit(null)}
+          isDarkMode={isDarkMode}
+          onSave={(updatedBook) => {
+            setBooks((prev) =>
+              prev.map((b) =>
+                (b._id || b.id) === updatedBook._id ? updatedBook : b
+              )
+            );
+            setCurrentUser((u) => ({
+              ...u,
+              savedBooks: u.savedBooks.map((b) =>
+                (b._id || b.id) === updatedBook._id ? updatedBook : b
+              ),
+            }));
+            showToast("Book updated successfully!");
+            setBookToEdit(null);
+          }}
+        />
+      )}
+
+      <BookModalPreview
+        book={selectedBook}
+        isDarkMode={isDarkMode}
+        onClose={() => setSelectedBook(null)}
+      />
     </>
   );
 }

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { searchBooks } from "../../utils/GoogleBooksApi";
 import { formatBook } from "../../utils/bookHelpers";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import { getRandomQuote } from "../../utils/quoteHelpers";
+import QuoteToggle from "../QuoteToggle/QuoteToggle";
+import BookModalPreview from "../BookModalPreview/BookModalPreview";
 import BookCard from "../BookCard/BookCard";
 import Preloader from "../Preloader/Preloader";
 import leafCrown from "../../assets/leaf-crown.png";
-import quoteleaf from "../../assets/quote-mark-leaf.png";
-import quotes from "../../utils/quotes";
+
 import "./Main.css";
-import "../ModalPreview/ModalPreview.css";
 
 function Main({
   onSignUpClick,
@@ -17,16 +17,16 @@ function Main({
   randomBooks,
   isLoggedIn,
   isDarkMode,
+  onSaveBookClick,
 }) {
   const [query, setQuery] = useState("");
   const [allBooks, setAllBooks] = useState(randomBooks || []);
-  const [visibleCount, setVisibleCount] = useState(3);
+  const [visibleCount, setVisibleCount] = useState(4);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isQuoteVisible, setIsQuoteVisible] = useState(false);
   const [quote, setQuote] = useState(() => getRandomQuote(null));
 
-  // Load random books from props
   useEffect(() => {
     if (randomBooks?.length) {
       setAllBooks(randomBooks);
@@ -35,11 +35,10 @@ function Main({
 
   function handleSearch() {
     if (!query.trim()) return;
-
     setIsLoading(true);
     setError("");
     setAllBooks([]);
-    setVisibleCount(3);
+    setVisibleCount(4);
 
     searchBooks(query)
       .then((data) => {
@@ -51,11 +50,12 @@ function Main({
         }
       })
       .catch(() => {
-        setError(
-          "Sorry, something went wrong during the request. Please try again later."
-        );
+        setError("Sorry, something went wrong. Please try again later.");
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        setQuery("");
+      });
   }
 
   function handlePreview(book) {
@@ -67,40 +67,7 @@ function Main({
   }
 
   function handleShowMore() {
-    setVisibleCount((prev) => prev + 3);
-  }
-
-  function getRandomQuote(excludeId) {
-    const filtered = quotes.filter((q) => q.id !== excludeId);
-    return filtered[Math.floor(Math.random() * filtered.length)];
-  }
-
-  function renderPreviewModal() {
-    if (!selectedBook) return null;
-
-    return (
-      <ModalWithForm
-        onClose={handleCloseModal}
-        contentClassName="modal__content--preview-green"
-        isPreview={true}
-        isDarkMode={isDarkMode}
-      >
-        <div className="modal-preview">
-          <img
-            src={selectedBook.coverImage}
-            alt={selectedBook.title}
-            className="modal-preview__image"
-          />
-          <div className="modal-preview__info">
-            <h2 className="modal-preview__title">{selectedBook.title}</h2>
-            <h4 className="modal-preview__author">by {selectedBook.author}</h4>
-            <p className="modal-preview__description">
-              {selectedBook.description}
-            </p>
-          </div>
-        </div>
-      </ModalWithForm>
-    );
+    setVisibleCount((prev) => prev + 4);
   }
 
   return (
@@ -113,38 +80,23 @@ function Main({
           Leaf by Leaf
         </h2>
 
-        <div className="main__quote-toggle">
-          {isQuoteVisible ? (
-            <blockquote
-              className="main__quote-box"
-              onClick={() => setIsQuoteVisible(false)}
-              aria-label="Hide quote"
-            >
-              “{quote.quote}”
-              <br />
-              <cite>
-                – {quote.author}, <em>{quote.book}</em>
-              </cite>
-            </blockquote>
-          ) : (
-            <button
-              className="main__quote-button"
-              onClick={() => {
-                setQuote(getRandomQuote(quote.id));
-                setIsQuoteVisible(true);
-              }}
-              aria-label="Show quote"
-            >
-              <img
-                src={quoteleaf}
-                alt="Toggle quote"
-                className="main__quote-icon"
-              />
-            </button>
-          )}
-        </div>
+        <QuoteToggle
+          quote={quote}
+          isVisible={isQuoteVisible}
+          onToggle={() => setIsQuoteVisible(false)}
+          onNewQuote={() => {
+            setQuote(getRandomQuote(quote.id));
+            setIsQuoteVisible(true);
+          }}
+        />
 
-        <div className="main__actions">
+        <form
+          className="main__actions"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearch();
+          }}
+        >
           <input
             type="text"
             value={query}
@@ -152,21 +104,19 @@ function Main({
             placeholder="Search by title, author, or category"
             className="main__input"
           />
-          <button
-            className="main__button main__button--search"
-            onClick={handleSearch}
-          >
+          <button type="submit" className="main__button main__button--search">
             Search
           </button>
           {!isLoggedIn && (
             <button
+              type="button"
               className="main__button main__button--signup"
               onClick={onSignUpClick}
             >
               Sign Up to Save Books
             </button>
           )}
-        </div>
+        </form>
 
         {isLoading && <Preloader />}
         {error && <p className="main__error">{error}</p>}
@@ -177,13 +127,15 @@ function Main({
               key={book.id}
               book={book}
               onPreview={handlePreview}
+              onSaveClick={onSaveBookClick}
+              isLoggedIn={isLoggedIn}
               isDarkMode={isDarkMode}
             />
           ))}
         </div>
 
         {!isLoading && !error && visibleCount < allBooks.length && (
-          <div style={{ textAlign: "center", margin: "20px" }}>
+          <div className="main__show-more">
             <button
               className="main__button main__button--search"
               onClick={handleShowMore}
@@ -193,7 +145,13 @@ function Main({
           </div>
         )}
       </main>
-      {renderPreviewModal()}
+
+      <BookModalPreview
+        book={selectedBook}
+        isDarkMode={isDarkMode}
+        onClose={handleCloseModal}
+        onSave={onSaveBookClick}
+      />
     </>
   );
 }
