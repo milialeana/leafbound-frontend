@@ -63,7 +63,7 @@ Leafbound is a personalized, immersive book-tracking app that helps readers grow
 
 ## Git Hub link
 
-[Visit the GitHub link](https://milialeana.github.io/leafbound/)
+[Visit the GitHub link](https://milialeana.github.io/leafbound-frontend/)
 
 ## Future Plans
 
