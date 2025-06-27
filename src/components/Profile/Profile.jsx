@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import BookCard from "../BookCard/BookCard";
 import SaveBookModal from "../SaveBookModal/SaveBookModal";
 import ProfileSearchBar from "../ProfileSearchBar/ProfileSearchBar";
@@ -23,6 +24,10 @@ function Profile({
   setCurrentUser,
   showToast,
 }) {
+  if (!isLoggedIn || !currentUser) {
+    return <Navigate to="/" replace />;
+  }
+
   const [isLoading, setIsLoading] = useState(true);
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -167,18 +172,26 @@ function Profile({
           book={bookToEdit}
           onClose={() => setBookToEdit(null)}
           isDarkMode={isDarkMode}
+          currentUser={currentUser}
+          showToast={showToast}
           onSave={(updatedBook) => {
-            setBooks((prev) =>
-              prev.map((b) =>
-                (b._id || b.id) === updatedBook._id ? updatedBook : b
-              )
+            const updatedBooks = books.map((b) =>
+              (b._id || b.id) === (updatedBook._id || updatedBook.id)
+                ? updatedBook
+                : b
             );
-            setCurrentUser((u) => ({
-              ...u,
-              savedBooks: u.savedBooks.map((b) =>
-                (b._id || b.id) === updatedBook._id ? updatedBook : b
-              ),
-            }));
+
+            const updatedUser = { ...currentUser, savedBooks: updatedBooks };
+
+            setCurrentUser(updatedUser);
+
+            localStorage.setItem(
+              "leafbound-currentUser",
+              JSON.stringify(updatedUser)
+            );
+
+            setBooks(updatedBooks);
+
             showToast("Book updated successfully!");
             setBookToEdit(null);
           }}
@@ -189,6 +202,8 @@ function Profile({
         book={selectedBook}
         isDarkMode={isDarkMode}
         onClose={() => setSelectedBook(null)}
+        IsLoggedIn={isLoggedIn}
+        onSave={() => {}}
       />
     </>
   );

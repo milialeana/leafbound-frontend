@@ -18,6 +18,7 @@
   object-fit: cover;
   border-radius: 10px 10px 0 0;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ddd;
 }
 
 .book-card__image:hover {
@@ -87,8 +88,8 @@
   pointer-events: none;
 }
 
-.book-card.dark .book-card__genre-badge {
-  background-color: #d6b007;
+.book-card__genre-badge {
+  background-color: #3c6e47;
   color: #1f1f1f;
 }
 
@@ -126,6 +127,16 @@
   font-size: 0.8rem;
   color: #666;
   margin-top: 6px;
+}
+
+.book-card__favorite-star {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 1.5rem;
+  color: #f7c948;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  z-index: 2;
 }
 
 .book-card__buttons {

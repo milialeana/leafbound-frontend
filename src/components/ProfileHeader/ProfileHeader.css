@@ -1,20 +1,23 @@
-.profile__top-bar {
+.profile-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.5rem;
   margin-bottom: 2rem;
+  padding: 10px 20px;
+  background: rgba(249, 246, 239, 0.7);
+  border-radius: 12px;
   position: relative;
 }
 
-.profile__image-wrapper {
-  position: relative;
-  display: inline-block;
+.profile-header__info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.profile__image {
-  margin-top: 15px;
+.profile-header__avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -22,110 +25,110 @@
   border: 3px solid #3c6e47;
 }
 
-.profile__edit-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #ffffffdd;
-  color: #3c6e47;
-  border: 2px solid #3c6e47;
-  border-radius: 50%;
-  font-size: 0.85rem;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-  cursor: pointer;
-}
-
-.profile__info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  backdrop-filter: blur(8px);
-  border: 1px solid #3c6e47;
-  border-radius: 8px;
-  padding: 5px;
-}
-
-.profile__name {
+.profile-header__name {
   font-size: 1.5rem;
   font-weight: bold;
   color: #a89804;
+  margin: 0;
 }
 
-.profile__logout-button {
+.profile-header__email {
   font-size: 1rem;
-  background-color: transparent;
-  border: 1px solid #3c6e47;
-  color: #3c6e47;
+  color: #555;
+  margin: 0;
+}
 
-  padding: 6px 10px;
+.profile-header__actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.profile-header__button {
+  background-color: #3c6e47;
+  color: white;
+  font-size: 1rem;
+  padding: 8px 14px;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: "Averia Serif Libre", serif;
 }
 
-.profile__logout-button:hover {
+.profile-header__button--logout {
+  background-color: transparent;
+  border: 1px solid #3c6e47;
+  color: #3c6e47;
+}
+
+.profile-header__button:hover {
+  opacity: 0.9;
+}
+
+.profile-header__button--logout:hover {
   background-color: #3c6e47;
   color: white;
 }
 
-.profile.dark .profile__name {
-  color: #d8f3dc;
+.profile.dark .profile-header {
+  background: rgba(30, 30, 30, 0.8);
 }
 
-.profile.dark .profile__edit-icon {
+.profile.dark .profile-header__button {
   background-color: #333;
+  color: #f4f4f4;
+}
+
+.profile.dark .profile-header__button--logout {
   color: #d6b007;
   border-color: #d6b007;
 }
 
-.profile.dark .profile__logout-button {
-  color: #d6b007;
-  border-color: #d6b007;
-}
-
-.profile.dark .profile__logout-button:hover {
+.profile.dark .profile-header__button--logout:hover {
   background-color: #d6b007;
   color: #2a2a2a;
 }
 
 @media (max-width: 627px) {
-  .profile__top-bar {
-    display: flex;
+  .profile-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    padding: 16px;
   }
 
-  .profile__image {
+  .profile-header__info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-header__avatar {
     width: 100px;
     height: 100px;
-    margin-top: 0;
   }
 
-  .profile__name {
-    font-size: 1.25rem;
-    margin: 0;
-    padding: 6px 12px;
+  .profile-header__name {
+    font-size: 1.3rem;
     background-color: #d6b007;
-    border-radius: 8px;
     color: #2f5637;
-    font-weight: 600;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 4px 8px;
+    border-radius: 6px;
   }
 
-  .profile__logout-button {
-    display: none;
+  .profile-header__email {
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .profile-header__actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .profile-header__button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
   }
 }

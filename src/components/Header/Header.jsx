@@ -23,11 +23,9 @@ function Header({
         setIsMenuOpen(false);
       }
     };
-
     if (isMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
 
@@ -37,15 +35,17 @@ function Header({
 
   const renderGuestMenu = () => (
     <>
-      <button className="header__button" onClick={onSignInClick}>
-        Sign In
-      </button>
-      <button
-        className="header__button header__button--signup"
-        onClick={onSignUpClick}
-      >
-        Sign Up
-      </button>
+      <div className="header__desktop-buttons">
+        <button className="header__button" onClick={onSignInClick}>
+          Sign In
+        </button>
+        <button
+          className="header__button header__button--signup"
+          onClick={onSignUpClick}
+        >
+          Sign Up
+        </button>
+      </div>
 
       <div className="header__menu-wrapper" ref={menuRef}>
         <button
@@ -92,11 +92,13 @@ function Header({
           onClick={() => setIsMenuOpen(false)}
         >
           <img
-            src={currentUser.avatar}
-            alt={currentUser.name}
+            src={currentUser?.avatar || "/default-avatar.png"}
+            alt={currentUser?.name || "User"}
             className="header__avatar"
           />
-          <span className="header__username">Hi, {currentUser.name}</span>
+          <span className="header__username">
+            Hi, {currentUser?.name || "Guest"}
+          </span>
         </Link>
         <button
           className={`header__menu-toggle ${
@@ -136,7 +138,7 @@ function Header({
             Leafbound
           </Link>
           <div className="header__auth-buttons">
-            {isLoggedIn ? renderUserMenu() : renderGuestMenu()}
+            {isLoggedIn && currentUser ? renderUserMenu() : renderGuestMenu()}
           </div>
         </div>
       </nav>

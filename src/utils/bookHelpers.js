@@ -5,6 +5,11 @@ export function formatBook(item) {
     title: info.title || "Untitled",
     author: (info.authors || ["Unknown"]).join(", "),
     description: info.description || "No description available.",
-    coverImage: info.imageLinks?.thumbnail || "/default-book.png",
+    coverImage:
+      secureThumbnail(info.imageLinks?.thumbnail) || "/default-book.png",
   };
+}
+
+export function secureThumbnail(url) {
+  return url?.startsWith("http://") ? url.replace("http://", "https://") : url;
 }

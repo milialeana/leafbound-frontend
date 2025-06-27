@@ -98,6 +98,7 @@ function Main({
           }}
         >
           <input
+            id="book-search-input"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -151,6 +152,7 @@ function Main({
         isDarkMode={isDarkMode}
         onClose={handleCloseModal}
         onSave={onSaveBookClick}
+        isLoggedIn={isLoggedIn}
       />
     </>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { v4 as uuidv4 } from "uuid";
 import "./SaveBookModal.css";
 
 import {
@@ -9,7 +8,14 @@ import {
   PROGRESS_OPTIONS,
 } from "../../utils/constants";
 
-function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
+function SaveBookModal({
+  onClose,
+  onSave,
+  book,
+  isDarkMode,
+  currentUser,
+  showToast,
+}) {
   const [status, setStatus] = useState(book?.status || "Want to Read");
   const [genre, setGenre] = useState(book?.genre || "Fantasy");
   const [notes, setNotes] = useState(book?.notes || "");
@@ -18,9 +24,9 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const savedBook = {
+
+    const updatedBook = {
       ...book,
-      _id: book?._id || uuidv4(),
       status,
       genre,
       notes,
@@ -28,7 +34,9 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
       progress,
       dateSaved: book?.dateSaved || new Date().toISOString(),
     };
-    onSave(savedBook);
+
+    onSave(updatedBook);
+    onClose();
   };
 
   return (
@@ -39,9 +47,11 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
     >
       <h2 className="save-book__title">{book ? "Edit Book" : "Save Book"}</h2>
       <form className="save-book__form" onSubmit={handleSubmit} noValidate>
-        <label className="save-book__label">
+        <label className="save-book__label" htmlFor="status-select">
           Status
           <select
+            id="status-select"
+            name="status"
             className="save-book__input"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
@@ -53,10 +63,11 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
             ))}
           </select>
         </label>
-
-        <label className="save-book__label">
+        <label className="save-book__label" htmlFor="genre-select">
           Genre
           <select
+            id="genre-select"
+            name="genre"
             className="save-book__input"
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
@@ -68,10 +79,11 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
             ))}
           </select>
         </label>
-
-        <label className="save-book__label">
+        <label className="save-book__label" htmlFor="progress-select">
           Progress
           <select
+            id="progress-select"
+            name="progress"
             className="save-book__input"
             value={progress}
             onChange={(e) => setProgress(e.target.value)}
@@ -83,26 +95,30 @@ function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
             ))}
           </select>
         </label>
-
-        <label className="save-book__label save-book__label--full">
+        <label
+          className="save-book__label save-book__label--full"
+          htmlFor="book-notes"
+        >
           Notes
           <textarea
+            id="book-notes"
+            name="notes"
             className="save-book__input"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Any thoughts or reminders..."
           />
         </label>
-
-        <label className="save-book__favorite">
+        <label className="save-book__favorite" htmlFor="book-favorite">
           <input
+            id="book-favorite"
+            name="isFavorite"
             type="checkbox"
             checked={isFavorite}
             onChange={(e) => setIsFavorite(e.target.checked)}
           />
           Mark as Favorite
         </label>
-
         <button type="submit" className="save-book__button">
           {book ? "Update Book" : "Save Book"}
         </button>

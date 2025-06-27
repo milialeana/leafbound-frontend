@@ -2,28 +2,25 @@ import "./ProfileHeader.css";
 
 function ProfileHeader({ currentUser, onEditProfileClick, onLogout }) {
   return (
-    <div className="profile__top-bar">
-      <div className="profile__image-wrapper">
+    <div className="profile-header">
+      <div className="profile-header__info">
         <img
-          src={currentUser.avatar}
-          alt="User Avatar"
-          className="profile__image"
+          src={currentUser?.avatar || "/default-avatar.png"}
+          alt={currentUser?.name || "User"}
+          className="profile-header__avatar"
         />
-        <button
-          className="profile__edit-icon"
-          onClick={onEditProfileClick}
-          aria-label="Edit Profile"
-        >
-          ✏️
-        </button>
+        <h2 className="profile-header__name">
+          {currentUser?.name || "Unnamed User"}
+        </h2>
+        <p className="profile-header__email">{currentUser?.email || ""}</p>
       </div>
-
-      <div className="profile__info">
-        <h2 className="profile__name">{currentUser.name}</h2>
+      <div className="profile-header__actions">
+        <button className="profile-header__button" onClick={onEditProfileClick}>
+          Edit Profile
+        </button>
         <button
-          className="profile__logout-button"
+          className="profile-header__button profile-header__button--logout"
           onClick={onLogout}
-          aria-label="Log Out"
         >
           Log Out
         </button>

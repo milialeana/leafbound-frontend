@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
-import { register } from "../../utils/auth";
 import "./RegisterModal.css";
 
 function RegisterModal({ onClose, onSignInClick, onRegister }) {
@@ -37,14 +36,16 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validatePasswords()) return;
-    register(values)
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        onRegister(data);
-      })
-      .catch(() => {
-        setApiError("Registration failed. Try a different email.");
-      });
+
+    // Simulate user registration, to delete after
+    const mockUser = {
+      name: values.name || "User",
+      email: values.email,
+      avatar: "https://i.pravatar.cc/150?u=" + values.email,
+      savedBooks: [],
+    };
+
+    onRegister(mockUser);
   };
 
   return (
@@ -54,10 +55,12 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
         <label className="modal-form__label">
           Name
           <input
+            id="name-input"
             type="text"
             name="name"
             className="modal-form__input"
             required
+            autoComplete="name"
             value={values.name || ""}
             onChange={handleChange}
           />
@@ -69,10 +72,12 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
         <label className="modal-form__label">
           Email
           <input
+            id="email-input"
             type="email"
             name="email"
             className="modal-form__input"
             required
+            autoComplete="email"
             value={values.email || ""}
             onChange={handleChange}
           />

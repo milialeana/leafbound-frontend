@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { secureThumbnail } from "../../utils/bookHelpers";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
@@ -10,32 +11,27 @@ import QuoteBar from "../QuoteBar/QuoteBar";
 import Profile from "../Profile/Profile";
 import SaveBookModal from "../SaveBookModal/SaveBookModal";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { searchBooks } from "../../utils/GoogleBooksApi";
-import { verifyToken } from "../../utils/auth";
 import Toast from "../Toast/Toast";
+//import { verifyToken } from "../../utils/auth";
 
 const LOCAL_STORAGE_USER_KEY = "leafbound-currentUser";
 const LOCAL_STORAGE_LOGIN_KEY = "leafbound-isLoggedIn";
 const LOCAL_STORAGE_THEME_KEY = "leafbound-theme";
 
 function App() {
-  const [toastData, setToastData] = useState({ message: "", type: "success" });
+  const [toastMessage, setToastMessage] = useState("");
   const [activeModal, setActiveModal] = useState(null);
   const [bookToSave, setBookToSave] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [randomBooks, setRandomBooks] = useState([]);
+
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
     return savedUser
       ? JSON.parse(savedUser)
-      : {
-          name: "Kate",
-          avatar: "https://i.pravatar.cc/150?u=fakeuser",
-          email: "kate@example.com",
-          savedBooks: [],
-        };
+      : { name: "", avatar: "", email: "", savedBooks: [] };
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -46,7 +42,23 @@ function App() {
     () => localStorage.getItem(LOCAL_STORAGE_THEME_KEY) === "true"
   );
 
-  // Sync to local storage
+  const handleFakeLogin = (userData = {}) => {
+    const mockUser = {
+      name: userData.name || "Demo User",
+      email: userData.email || "demo@example.com",
+      avatar: "https://i.pravatar.cc/150?u=demo",
+      savedBooks: [],
+      ...userData,
+    };
+    setCurrentUser(mockUser);
+    localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(mockUser));
+    setIsLoggedIn(true);
+    localStorage.setItem(LOCAL_STORAGE_LOGIN_KEY, "true");
+    setActiveModal(null);
+  };
+
+  const handleFakeRegister = handleFakeLogin;
+
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(currentUser));
   }, [currentUser]);
@@ -59,45 +71,46 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_THEME_KEY, isDarkMode);
   }, [isDarkMode]);
 
-  const showToast = (message, type = "success") => {
-    setToastData({ message, type });
-    setTimeout(() => setToastData({ message: "", type: "success" }), 3000);
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(""), 3000);
   };
 
-  // Check token on load
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      verifyToken(token)
-        .then((userData) => {
-          setCurrentUser((prev) => ({ ...prev, ...userData }));
-          setIsLoggedIn(true);
-        })
-        .catch((err) => {
-          console.error("Token invalid:", err);
-          setIsLoggedIn(false);
-          localStorage.removeItem("jwt");
-        });
-    }
-  }, []);
+  //for later with Jwt
+  //useEffect(() => {
+  //const token = localStorage.getItem("jwt");
+  // if (token) {
+  //verifyToken(token)
+  //.then((userData) => {
+  // setCurrentUser((prev) => ({ ...prev, ...userData }));
+  // setIsLoggedIn(true);
+  // })
+  //.catch((err) => {
+  // console.error("Token invalid:", err);
+  //setIsLoggedIn(false);
+  //localStorage.removeItem("jwt");
+  //  });
+  // }
+  // }, []);
 
   useEffect(() => {
     searchBooks("fiction", 20)
       .then((data) => {
         if (data.items?.length) {
           const shuffled = data.items.sort(() => 0.5 - Math.random());
-          const randomThree = shuffled.slice(0, 4).map((item) => {
+          const randomFour = shuffled.slice(0, 4).map((item) => {
             const info = item.volumeInfo || {};
             return {
               id: item.id,
               title: info.title || "Untitled",
               author: (info.authors || ["Unknown"]).join(", "),
               description: info.description || "No description available.",
-              coverImage: info.imageLinks?.thumbnail || "/default-book.png",
-              googleId: item.id,
+              coverImage:
+                secureThumbnail(info.imageLinks?.thumbnail) ||
+                "/default-book.png",
             };
           });
-          setRandomBooks(randomThree);
+          setRandomBooks(randomFour);
         }
       })
       .catch(console.error);
@@ -105,24 +118,40 @@ function App() {
 
   const handleSaveBook = (book) => {
     const alreadySaved = currentUser.savedBooks.some(
-      (saved) => saved.googleId === book.googleId
+      (b) => b.id === book.id || b._id === book._id
     );
 
     if (alreadySaved) {
-      showToast("You've already saved this book to your library!", "warning");
+      showToast("You've already saved this book.");
       return;
     }
 
-    showToast("Book saved to your library!", "success");
-    setCurrentUser((u) => ({
-      ...u,
-      savedBooks: [...u.savedBooks, book],
-    }));
+    const newBook = {
+      ...book,
+      _id: Date.now().toString(),
+      status: "",
+      genre: "",
+      progress: "",
+      notes: "",
+      isFavorite: false,
+      tags: [],
+    };
+
+    const updatedUser = {
+      ...currentUser,
+      savedBooks: [...currentUser.savedBooks, newBook],
+    };
+
+    setCurrentUser(updatedUser);
+    localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(updatedUser));
+    showToast("Book saved to your library!");
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentUser((u) => ({ ...u, savedBooks: [] }));
+    localStorage.setItem(LOCAL_STORAGE_LOGIN_KEY, "false");
+    localStorage.removeItem("jwt");
   };
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
@@ -161,16 +190,16 @@ function App() {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Profile
-                  isDarkMode={isDarkMode}
-                  toggleTheme={toggleTheme}
-                  isLoggedIn={isLoggedIn}
-                  currentUser={currentUser}
-                  onEditProfileClick={openEditProfile}
-                  onSaveBookClick={handleSaveBook}
-                />
-              </ProtectedRoute>
+              <Profile
+                isDarkMode={isDarkMode}
+                toggleTheme={toggleTheme}
+                isLoggedIn={isLoggedIn}
+                currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+                onEditProfileClick={openEditProfile}
+                onSaveBookClick={handleSaveBook}
+                showToast={showToast}
+              />
             }
           />
           <Route path="/about" element={<About />} />
@@ -182,10 +211,7 @@ function App() {
           <LoginModal
             onClose={() => setActiveModal(null)}
             onSignUpClick={() => setActiveModal("register")}
-            onLogin={() => {
-              setIsLoggedIn(true);
-              setActiveModal(null);
-            }}
+            onLogin={handleFakeLogin}
             contentClassName="modal__content--form"
           />
         )}
@@ -193,10 +219,7 @@ function App() {
           <RegisterModal
             onClose={() => setActiveModal(null)}
             onSignInClick={() => setActiveModal("login")}
-            onRegister={() => {
-              setIsLoggedIn(true);
-              setActiveModal(null);
-            }}
+            onRegister={handleFakeRegister}
             contentClassName="modal__content--form"
           />
         )}
@@ -226,13 +249,8 @@ function App() {
           />
         )}
       </div>
-
-      {toastData.message && (
-        <Toast
-          message={toastData.message}
-          type={toastData.type}
-          onClose={() => setToastData({ message: "", type: "success" })}
-        />
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage("")} />
       )}
     </Router>
   );

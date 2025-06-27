@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
-import { login } from "../../utils/auth";
 
 function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
   const { values, handleChange, errors, isValid, resetForm } =
@@ -15,23 +14,26 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(values)
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        onLogin(data);
-      })
-      .catch(() => {
-        setApiError("Invalid email or password.");
-      });
+
+    // Simulate successful login, to delete after
+    const mockUser = {
+      name: "Demo User",
+      email: values.email || "demo@example.com",
+      avatar: "https://i.pravatar.cc/150?u=demo",
+      savedBooks: [],
+    };
+
+    onLogin(mockUser);
   };
 
   return (
     <ModalWithForm onClose={onClose} contentClassName={contentClassName}>
       <h2 className="modal-form__title">Welcome Back</h2>
       <form className="modal-form" onSubmit={handleSubmit} noValidate>
-        <label className="modal-form__label">
+        <label className="modal-form__label" htmlFor="email">
           Email
           <input
+            id="email"
             type="email"
             name="email"
             className="modal-form__input"
@@ -45,9 +47,10 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
           )}
         </label>
 
-        <label className="modal-form__label">
+        <label className="modal-form__label" htmlFor="password">
           Password
           <input
+            id="password"
             type="password"
             name="password"
             className="modal-form__input"

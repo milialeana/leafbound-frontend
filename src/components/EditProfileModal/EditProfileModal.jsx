@@ -19,10 +19,13 @@ function EditProfileModal({ onClose, onSave, isDarkMode, currentUser }) {
     >
       <h2 className="edit-profile-form__title">Edit Profile</h2>
       <form className="edit-profile-form" onSubmit={handleSubmit} noValidate>
-        <label className="edit-profile-form__label">
+        <label className="edit-profile-form__label" htmlFor="avatar">
           Profile Picture URL
           <input
+            id="avatar"
+            name="avatar"
             type="url"
+            autoComplete="off"
             className="edit-profile-form__input"
             value={avatar}
             onChange={(e) => setAvatar(e.target.value)}
@@ -30,11 +33,14 @@ function EditProfileModal({ onClose, onSave, isDarkMode, currentUser }) {
           />
         </label>
 
-        <label className="edit-profile-form__label">
+        <label className="edit-profile-form__label" htmlFor="name">
           Display Name
           <input
+            id="name"
+            name="name"
             type="text"
             className="edit-profile-form__input"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
