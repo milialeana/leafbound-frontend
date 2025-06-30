@@ -54,6 +54,23 @@ Leafbound is a personalized, immersive book-tracking app that helps readers grow
 - **Forest Background and Cozy Typography**  
   Immersive visual design with accessibility in mind.
 
+### Screenshots
+
+![App Screenshot](./src/assets/title.JPG)
+This is on the main page, even users not logged in can still search up books.
+
+![App Screenshot](./src/assets/signin.JPG)
+Users can sign in or if they haven't created an account yet, they can switch to sign up.
+
+![App Screenshot](./src/assets/preview.JPG)
+Can click on a book to view the whole synopsis of the book, with a scroll bar for longer descriptions.
+
+![App Screenshot](./src/assets/edit.JPG)
+Once the book is saved to the users library, they're able to add if they have read the book, completed it or they do not want to read it anymore.
+
+![App Screenshot](./src/assets/status.JPG)
+With the ability to favorite it, it'll create a star on the top left hand corner. Also with the ability to hover over the book to see any notes the user may have added.
+
 ### Tech Stack
 
 - **Frontend**: React, Vite, Context API, CSS
