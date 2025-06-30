@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
+import defaultAvatar from "../../assets/default-avatar.png";
 import "./RegisterModal.css";
 
 function RegisterModal({ onClose, onSignInClick, onRegister }) {
@@ -32,16 +33,14 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
     }
     return true;
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validatePasswords()) return;
 
-    // Simulate user registration, to delete after
     const mockUser = {
       name: values.name || "User",
       email: values.email,
-      avatar: "https://i.pravatar.cc/150?u=" + values.email,
+      avatar: defaultAvatar,
       savedBooks: [],
     };
 

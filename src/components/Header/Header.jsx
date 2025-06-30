@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 import leafCrown from "../../assets/leaf-crown.png";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 function Header({
   onSignInClick,
@@ -92,8 +93,8 @@ function Header({
           onClick={() => setIsMenuOpen(false)}
         >
           <img
-            src={currentUser?.avatar || "/default-avatar.png"}
-            alt={currentUser?.name || "User"}
+            src={currentUser?.avatar || defaultAvatar}
+            alt="User"
             className="header__avatar"
           />
           <span className="header__username">

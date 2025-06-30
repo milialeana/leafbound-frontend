@@ -9,7 +9,7 @@
   font-family: "Averia Serif Libre", serif;
   font-size: 1rem;
   z-index: 10000;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+
   animation: toast-fade-in 0.3s ease;
 }
 

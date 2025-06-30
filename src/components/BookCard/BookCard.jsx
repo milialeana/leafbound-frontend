@@ -1,6 +1,5 @@
 import React from "react";
 import "./BookCard.css";
-import "../BookModalPreview/BookModalPreview.css";
 import plusIcon from "../../assets/add-book.svg";
 import noCover from "../../assets/no-cover.png";
 
@@ -31,21 +30,23 @@ function BookCard({
         </span>
       )}
 
-      <img
-        src={book.coverImage || noCover}
-        alt={book.title}
-        className="book-card__image"
-        onClick={() => onPreview(book)}
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = noCover;
-        }}
-      />
-      {book.notes && (
-        <div className="book-card__hover-notes">
-          <strong>Note:</strong> {book.notes}
-        </div>
-      )}
+      <div className="book-card__image-wrapper">
+        <img
+          src={book.coverImage || noCover}
+          alt={book.title}
+          className="book-card__image"
+          onClick={() => onPreview(book)}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = noCover;
+          }}
+        />
+        {book.notes && (
+          <div className="book-card__hover-notes">
+            <strong>Note:</strong> {book.notes}
+          </div>
+        )}
+      </div>
 
       <div className="book-card__content">
         <div className="book-card__genre-badge">{book.genre}</div>

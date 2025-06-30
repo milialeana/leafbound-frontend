@@ -34,12 +34,11 @@
   background-color: #f9f9f9;
   color: #2e2e2e;
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.2s ease;
+  transition: border-color 0.3s ease;
 }
 
 .save-book__input:focus {
   border-color: #6ba36f;
-  box-shadow: 0 0 0 3px rgba(107, 163, 111, 0.2);
   background-color: #fff;
 }
 
@@ -100,13 +99,11 @@
   background-color: #2a2a2a;
   color: #f4f4f4;
   border-color: #555;
-  transition: background-color 0.3s ease, border-color 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .modal.dark .save-book__input:focus {
   border-color: #d6b007;
-  box-shadow: 0 0 0 3px rgba(214, 176, 7, 0.25);
   background-color: #333;
 }
 

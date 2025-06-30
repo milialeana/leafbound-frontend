@@ -23,6 +23,7 @@ function Profile({
   onEditProfileClick,
   setCurrentUser,
   showToast,
+  onLogout,
 }) {
   if (!isLoggedIn || !currentUser) {
     return <Navigate to="/" replace />;
@@ -115,12 +116,7 @@ function Profile({
         <ProfileHeader
           currentUser={currentUser}
           onEditProfileClick={onEditProfileClick}
-          onLogout={() => {
-            localStorage.removeItem("jwt");
-            localStorage.removeItem("leafbound-currentUser");
-            localStorage.setItem("leafbound-isLoggedIn", "false");
-            window.location.href = "/";
-          }}
+          onLogout={onLogout}
         />
 
         <ProfileSearchBar

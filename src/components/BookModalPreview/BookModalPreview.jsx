@@ -31,7 +31,10 @@ function BookModalPreview({ book, isDarkMode, isLoggedIn, onClose, onSave }) {
         {isLoggedIn && (
           <button
             className="modal-preview__save-button"
-            onClick={() => onSave(book)}
+            onClick={() => {
+              onSave(book);
+              onClose();
+            }}
           >
             Save to Library
           </button>

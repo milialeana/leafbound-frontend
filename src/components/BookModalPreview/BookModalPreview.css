@@ -125,7 +125,7 @@
   .modal__content--preview-green {
     max-width: 95vw;
     height: 600px;
-    margin-top: 100px;
+    margin-top: 0;
     padding: 1rem;
   }
 

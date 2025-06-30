@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
   const { values, handleChange, errors, isValid, resetForm } =
@@ -19,7 +20,7 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
     const mockUser = {
       name: "Demo User",
       email: values.email || "demo@example.com",
-      avatar: "https://i.pravatar.cc/150?u=demo",
+      avatar: defaultAvatar,
       savedBooks: [],
     };
 

@@ -1,11 +1,12 @@
 import "./ProfileHeader.css";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 function ProfileHeader({ currentUser, onEditProfileClick, onLogout }) {
   return (
     <div className="profile-header">
       <div className="profile-header__info">
         <img
-          src={currentUser?.avatar || "/default-avatar.png"}
+          src={currentUser?.avatar || defaultAvatar}
           alt={currentUser?.name || "User"}
           className="profile-header__avatar"
         />

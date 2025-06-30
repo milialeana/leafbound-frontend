@@ -33,7 +33,6 @@
 .modal-form__input:focus {
   border-color: #3c6e47;
   outline: none;
-  box-shadow: 0 0 4px rgba(60, 110, 71, 0.4);
 }
 
 .modal-form__button {

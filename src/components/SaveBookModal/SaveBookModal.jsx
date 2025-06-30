@@ -8,14 +8,7 @@ import {
   PROGRESS_OPTIONS,
 } from "../../utils/constants";
 
-function SaveBookModal({
-  onClose,
-  onSave,
-  book,
-  isDarkMode,
-  currentUser,
-  showToast,
-}) {
+function SaveBookModal({ onClose, onSave, book, isDarkMode }) {
   const [status, setStatus] = useState(book?.status || "Want to Read");
   const [genre, setGenre] = useState(book?.genre || "Fantasy");
   const [notes, setNotes] = useState(book?.notes || "");

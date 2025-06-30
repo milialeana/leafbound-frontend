@@ -32,7 +32,6 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   word-wrap: break-word;
   box-sizing: border-box;
 }
@@ -144,7 +143,6 @@
 .main.dark .main__tagline {
   background-color: rgba(255, 255, 255, 0.08);
   color: #e6ffe6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .main.dark .main__input {

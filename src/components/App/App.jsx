@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { secureThumbnail } from "../../utils/bookHelpers";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -13,13 +18,15 @@ import SaveBookModal from "../SaveBookModal/SaveBookModal";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import { searchBooks } from "../../utils/GoogleBooksApi";
 import Toast from "../Toast/Toast";
-//import { verifyToken } from "../../utils/auth";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 const LOCAL_STORAGE_USER_KEY = "leafbound-currentUser";
 const LOCAL_STORAGE_LOGIN_KEY = "leafbound-isLoggedIn";
 const LOCAL_STORAGE_THEME_KEY = "leafbound-theme";
 
-function App() {
+function AppInner() {
+  const navigate = useNavigate();
+
   const [toastMessage, setToastMessage] = useState("");
   const [activeModal, setActiveModal] = useState(null);
   const [bookToSave, setBookToSave] = useState(null);
@@ -46,7 +53,7 @@ function App() {
     const mockUser = {
       name: userData.name || "Demo User",
       email: userData.email || "demo@example.com",
-      avatar: "https://i.pravatar.cc/150?u=demo",
+      avatar: userData.avatar || defaultAvatar,
       savedBooks: [],
       ...userData,
     };
@@ -75,23 +82,6 @@ function App() {
     setToastMessage(message);
     setTimeout(() => setToastMessage(""), 3000);
   };
-
-  //for later with Jwt
-  //useEffect(() => {
-  //const token = localStorage.getItem("jwt");
-  // if (token) {
-  //verifyToken(token)
-  //.then((userData) => {
-  // setCurrentUser((prev) => ({ ...prev, ...userData }));
-  // setIsLoggedIn(true);
-  // })
-  //.catch((err) => {
-  // console.error("Token invalid:", err);
-  //setIsLoggedIn(false);
-  //localStorage.removeItem("jwt");
-  //  });
-  // }
-  // }, []);
 
   useEffect(() => {
     searchBooks("fiction", 20)
@@ -152,106 +142,132 @@ function App() {
     setCurrentUser((u) => ({ ...u, savedBooks: [] }));
     localStorage.setItem(LOCAL_STORAGE_LOGIN_KEY, "false");
     localStorage.removeItem("jwt");
+    navigate("/");
   };
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
   const openEditProfile = () => setIsEditModalOpen(true);
 
+  useEffect(() => {
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        if (activeModal) setActiveModal(null);
+        if (bookToSave) setBookToSave(null);
+        if (isEditModalOpen) setIsEditModalOpen(false);
+        if (selectedBook) setSelectedBook(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal, bookToSave, isEditModalOpen, selectedBook]);
+
   return (
-    <Router basename="/leafbound-frontend">
-      <div className={`page ${isLoggedIn && isDarkMode ? "dark" : ""}`}>
-        <div className="fixed-top-bar">
-          <QuoteBar />
-          <Header
-            isLoggedIn={isLoggedIn}
-            onLogout={handleLogout}
-            currentUser={currentUser}
-            isDarkMode={isDarkMode}
-            onSignInClick={() => setActiveModal("login")}
-            onSignUpClick={() => setActiveModal("register")}
-          />
-        </div>
-
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                onSignUpClick={() => setActiveModal("register")}
-                selectedBook={selectedBook}
-                setSelectedBook={setSelectedBook}
-                randomBooks={randomBooks}
-                isLoggedIn={isLoggedIn}
-                isDarkMode={isDarkMode}
-                onSaveBookClick={handleSaveBook}
-              />
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <Profile
-                isDarkMode={isDarkMode}
-                toggleTheme={toggleTheme}
-                isLoggedIn={isLoggedIn}
-                currentUser={currentUser}
-                setCurrentUser={setCurrentUser}
-                onEditProfileClick={openEditProfile}
-                onSaveBookClick={handleSaveBook}
-                showToast={showToast}
-              />
-            }
-          />
-          <Route path="/about" element={<About />} />
-        </Routes>
-
-        <Footer />
-
-        {activeModal === "login" && (
-          <LoginModal
-            onClose={() => setActiveModal(null)}
-            onSignUpClick={() => setActiveModal("register")}
-            onLogin={handleFakeLogin}
-            contentClassName="modal__content--form"
-          />
-        )}
-        {activeModal === "register" && (
-          <RegisterModal
-            onClose={() => setActiveModal(null)}
-            onSignInClick={() => setActiveModal("login")}
-            onRegister={handleFakeRegister}
-            contentClassName="modal__content--form"
-          />
-        )}
-
-        {bookToSave && (
-          <SaveBookModal
-            onClose={() => setBookToSave(null)}
-            book={bookToSave}
-            isDarkMode={isDarkMode}
-            onSave={(savedBook) => {
-              handleSaveBook(savedBook);
-              setBookToSave(null);
-            }}
-          />
-        )}
-
-        {isEditModalOpen && (
-          <EditProfileModal
-            onClose={() => setIsEditModalOpen(false)}
-            currentUser={currentUser}
-            isDarkMode={isDarkMode}
-            onSave={(data) => {
-              setCurrentUser((u) => ({ ...u, ...data }));
-              showToast("Profile updated!");
-              setIsEditModalOpen(false);
-            }}
-          />
-        )}
+    <div className={`page ${isLoggedIn && isDarkMode ? "dark" : ""}`}>
+      <div className="fixed-top-bar">
+        <QuoteBar />
+        <Header
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
+          currentUser={currentUser}
+          isDarkMode={isDarkMode}
+          onSignInClick={() => setActiveModal("login")}
+          onSignUpClick={() => setActiveModal("register")}
+        />
       </div>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              onSignUpClick={() => setActiveModal("register")}
+              selectedBook={selectedBook}
+              setSelectedBook={setSelectedBook}
+              randomBooks={randomBooks}
+              isLoggedIn={isLoggedIn}
+              isDarkMode={isDarkMode}
+              onSaveBookClick={handleSaveBook}
+              onLogout={handleLogout}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Profile
+              isDarkMode={isDarkMode}
+              toggleTheme={toggleTheme}
+              isLoggedIn={isLoggedIn}
+              currentUser={currentUser}
+              onLogout={handleLogout}
+              setCurrentUser={setCurrentUser}
+              onEditProfileClick={openEditProfile}
+              onSaveBookClick={handleSaveBook}
+              showToast={showToast}
+            />
+          }
+        />
+        <Route path="/about" element={<About />} />
+      </Routes>
+
+      <Footer />
+
+      {activeModal === "login" && (
+        <LoginModal
+          onClose={() => setActiveModal(null)}
+          onSignUpClick={() => setActiveModal("register")}
+          onLogin={handleFakeLogin}
+          contentClassName="modal__content--form"
+        />
+      )}
+      {activeModal === "register" && (
+        <RegisterModal
+          onClose={() => setActiveModal(null)}
+          onSignInClick={() => setActiveModal("login")}
+          onRegister={handleFakeRegister}
+          contentClassName="modal__content--form"
+        />
+      )}
+
+      {bookToSave && (
+        <SaveBookModal
+          onClose={() => setBookToSave(null)}
+          book={bookToSave}
+          isDarkMode={isDarkMode}
+          onSave={(savedBook) => {
+            handleSaveBook(savedBook);
+            setBookToSave(null);
+          }}
+        />
+      )}
+
+      {isEditModalOpen && (
+        <EditProfileModal
+          onClose={() => setIsEditModalOpen(false)}
+          currentUser={currentUser}
+          isDarkMode={isDarkMode}
+          onSave={(data) => {
+            setCurrentUser((u) => ({ ...u, ...data }));
+            showToast("Profile updated!");
+            setIsEditModalOpen(false);
+          }}
+        />
+      )}
+
       {toastMessage && (
         <Toast message={toastMessage} onClose={() => setToastMessage("")} />
       )}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router basename="/leafbound-frontend">
+      <AppInner />
     </Router>
   );
 }

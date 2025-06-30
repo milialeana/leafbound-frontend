@@ -95,7 +95,7 @@
 .dark .profile-search-bar__icon,
 .dark .profile-search-bar__select,
 .dark .profile-search-bar__checkbox {
-  color: #f4f4f4;
+  color: #000000;
 }
 
 .dark .profile-search-bar__checkbox input {
