@@ -1,0 +1,163 @@
+.profile-search-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.profile-search-bar__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.profile-search-bar__icon {
+  position: absolute;
+  left: 12px;
+  color: #999;
+  pointer-events: none;
+}
+
+.profile-search-bar__input {
+  padding: 10px 12px 10px 36px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: white;
+  width: 100%;
+}
+
+.profile-search-bar__reset {
+  position: absolute;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profile-search-bar__reset:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.profile-search-bar__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.profile-search-bar__select,
+.profile-search-bar__checkbox {
+  flex: 1 1 150px;
+  max-width: 200px;
+}
+
+.profile-search-bar__select,
+.profile-search-bar__checkbox input {
+  height: 42px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.profile-search-bar__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  font-size: 0.95rem;
+}
+
+.profile-search-bar__toggle {
+  display: none;
+}
+
+.dark .profile-search-bar {
+  background-color: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark .profile-search-bar__input {
+  background-color: #2b2b2b;
+  color: #f4f4f4;
+  border: 1px solid #555;
+}
+
+.dark .profile-search-bar__icon,
+.dark .profile-search-bar__select,
+.dark .profile-search-bar__checkbox {
+  color: #000000;
+}
+
+.dark .profile-search-bar__checkbox input {
+  accent-color: #3c6e47;
+}
+
+@media (max-width: 627px) {
+  .profile-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-search-bar__select {
+    height: 36px;
+    font-size: 0.95rem;
+    padding: 4px 8px;
+    width: auto;
+    max-width: 100%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+  }
+
+  .profile-search-bar__input-wrapper {
+    width: 100%;
+  }
+
+  .profile-search-bar__reset {
+    display: none;
+  }
+
+  .profile-search-bar__input {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 8px 10px 8px 32px;
+  }
+
+  .profile-search-bar__filters {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    display: none;
+    align-items: stretch;
+  }
+
+  .profile-search-bar__filters--visible {
+    display: flex;
+  }
+
+  .profile-search-bar__toggle {
+    display: inline-block;
+    margin-left: auto;
+    margin: 0;
+    background: transparent;
+    border: none;
+    color: #3c6e47;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+}

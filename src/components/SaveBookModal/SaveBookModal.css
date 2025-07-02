@@ -1,0 +1,153 @@
+.save-book__form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2rem;
+  padding: 24px 32px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+.save-book__label {
+  display: flex;
+  flex-direction: column;
+  font-family: "Averia Serif Libre", serif;
+  font-size: 1rem;
+  gap: 8px;
+  color: #2e2e2e;
+}
+
+.save-book__title {
+  font-size: 1.75rem;
+  font-family: "Averia Serif Libre", serif;
+  margin-bottom: 1rem;
+  color: #2f5637;
+  text-align: center;
+}
+
+.save-book__input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: #2e2e2e;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.save-book__input:focus {
+  border-color: #6ba36f;
+  background-color: #fff;
+}
+
+.save-book__label textarea.save-book__input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.save-book__label--full {
+  grid-column: span 2;
+}
+
+.save-book__favorite {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.save-book__favorite input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3c6e47;
+  cursor: pointer;
+}
+
+.save-book__button {
+  background-color: #3c6e47;
+  color: white;
+  font-family: "Averia Serif Libre", serif;
+  padding: 14px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  margin-top: 12px;
+}
+
+.save-book__button:hover {
+  background-color: #2f5637;
+}
+
+.modal.dark .save-book__title {
+  color: #d6b007;
+}
+
+.modal.dark .save-book__label {
+  color: #d8f3dc;
+  transition: color 0.3s ease;
+}
+
+.modal.dark .save-book__input {
+  background-color: #2a2a2a;
+  color: #f4f4f4;
+  border-color: #555;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.modal.dark .save-book__input:focus {
+  border-color: #d6b007;
+  background-color: #333;
+}
+
+.modal.dark .save-book__button {
+  background-color: #3c6e47;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.modal.dark .save-book__button:hover {
+  background-color: #2f5637;
+}
+
+.modal.dark .save-book__label input[type="checkbox"] + span {
+  color: #f4f4f4;
+}
+
+.modal.dark .save-book__input,
+.modal.dark .save-book__label,
+.modal.dark .save-book__button {
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 627px) {
+  .save-book__form {
+    grid-template-columns: 1fr;
+    padding: 12px 16px;
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .save-book__title {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  .save-book__input {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  .save-book__button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}

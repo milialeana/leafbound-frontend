@@ -1,0 +1,277 @@
+.header {
+  font-family: "Averia Serif Libre", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  background: linear-gradient(to right, #f9f6ef, #f1ede6);
+  padding: 20px 40px;
+  position: fixed;
+  top: 60px;
+  width: 100vw;
+  max-width: 100vw;
+  z-index: 1100;
+  box-sizing: border-box;
+}
+
+.header__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header__brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header__logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e2e2e;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header__logo:hover {
+  color: #3c6e47;
+}
+
+.header__logo-icon {
+  width: 40px;
+}
+
+.header__auth-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: relative;
+}
+
+.header__button {
+  padding: 0.6rem 1.2rem;
+  margin-right: 5px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-family: "Averia Serif Libre", serif;
+  cursor: pointer;
+  background-color: #3c6e47;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.header__button:hover {
+  background-color: #f4f1eb;
+  border-color: #bbb;
+  color: #2f5637;
+}
+
+.header__button--signup {
+  background-color: #3c6e47;
+  color: white;
+  border: none;
+}
+
+.header__menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.8rem;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.header__dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #ffffff;
+  z-index: 9999;
+  padding: 0.5rem 0;
+  border: none;
+  border-radius: 12px;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  font-family: "Averia Serif Libre", serif;
+  animation: fadeSlideDown 0.25s ease-out;
+}
+
+.header__dropdown::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #ffffff;
+  filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.header__dropdown-button {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 1rem;
+  color: #2e2e2e;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.header__dropdown-button:last-child {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.header__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.header__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header__username {
+  font-family: "Averia Serif Libre", serif;
+  font-size: 1rem;
+  color: #2e2e2e;
+}
+
+.header__username:hover {
+  color: #3c6e47;
+}
+
+.header__user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.header--dark {
+  background: linear-gradient(to right, #1e1e1e, #2a2a2a);
+  border-bottom: 1px solid #444;
+}
+
+.header--dark .header__logo {
+  color: #d6b007;
+}
+
+.header--dark .header__username {
+  color: #d6b007;
+}
+
+.header--dark .header__username:hover {
+  color: #444;
+}
+
+.header--dark .header__dropdown {
+  background: #2a2a2a;
+}
+
+.header--dark .header__dropdown::before {
+  border-bottom: 10px solid #2a2a2a;
+  filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.25));
+}
+.header--dark .header__button,
+.header--dark .header__dropdown-button {
+  color: #f4f4f4;
+}
+
+.header--dark .header__button:hover {
+  background-color: #444;
+}
+
+.header--dark .header__avatar {
+  border: 2px solid #d6b007;
+}
+
+@media (max-width: 627px) {
+  .header {
+    top: 0;
+    padding: 16px;
+  }
+
+  .header__logo {
+    font-size: 1.6rem;
+  }
+
+  .header__button,
+  .header__button--signup {
+    display: none;
+  }
+
+  .header__menu-toggle {
+    display: block;
+  }
+
+  .header__menu-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .header__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+  }
+
+  .header__auth-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .header__user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+
+  .header__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .header__username {
+    display: none;
+  }
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
