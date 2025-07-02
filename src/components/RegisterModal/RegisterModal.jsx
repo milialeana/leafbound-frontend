@@ -62,6 +62,7 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             autoComplete="name"
             value={values.name || ""}
             onChange={handleChange}
+            placeholder="Enter your name"
           />
           {errors.name && (
             <span className="modal-form__error">{errors.name}</span>
@@ -79,6 +80,7 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             autoComplete="email"
             value={values.email || ""}
             onChange={handleChange}
+            placeholder="Enter your email"
           />
           {errors.email && (
             <span className="modal-form__error">{errors.email}</span>
@@ -94,6 +96,7 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             required
             value={values.password || ""}
             onChange={handleChange}
+            placeholder="Create a password"
           />
           {errors.password && (
             <span className="modal-form__error">{errors.password}</span>
@@ -109,6 +112,7 @@ function RegisterModal({ onClose, onSignInClick, onRegister }) {
             required
             value={values.confirmPassword || ""}
             onChange={handleChange}
+            placeholder="Confirm your password"
           />
           {errors.confirmPassword && (
             <span className="modal-form__error">{errors.confirmPassword}</span>

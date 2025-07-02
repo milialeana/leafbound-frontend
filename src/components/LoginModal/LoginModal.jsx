@@ -42,6 +42,7 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
             value={values.email || ""}
             onChange={handleChange}
             autoComplete="email"
+            placeholder="Enter your email"
           />
           {errors.email && (
             <span className="modal-form__error">{errors.email}</span>
@@ -59,6 +60,7 @@ function LoginModal({ onClose, onSignUpClick, contentClassName, onLogin }) {
             value={values.password || ""}
             onChange={handleChange}
             autoComplete="current-password"
+            placeholder="Enter your password"
           />
           {errors.password && (
             <span className="modal-form__error">{errors.password}</span>

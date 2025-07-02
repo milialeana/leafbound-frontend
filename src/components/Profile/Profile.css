@@ -40,13 +40,14 @@
 
 .profile__book-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 2rem;
   justify-items: center;
   width: 100%;
   max-width: 1200px;
   margin: 15px auto;
-  padding-bottom: 3rem;
+  padding: 0 1rem 3rem;
+  box-sizing: border-box;
 }
 
 .profile__image-wrapper {
@@ -158,7 +159,7 @@
   .profile__book-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
-    padding: 0 0.5rem 2rem;
+    padding: 0 1rem 2rem;
   }
 
   .pagination {
